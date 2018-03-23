@@ -1,0 +1,9 @@
+{
+  "name": "MelodyCrafter",
+  "version": "1.0.0",
+  "main": "app.js",
+  "license": "MIT",
+  "dependencies": {
+    "xmlbuilder": "^9.0.7"
+  }
+}
