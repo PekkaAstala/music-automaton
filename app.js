@@ -6,6 +6,6 @@ const fs = require('fs');
 const chordProgression = ChordProgressionFactory.generate();
 const measures = chordProgression.map(degree => MajorScale.notes(degree));
 const xml = MusicXMLOutput.toXml(measures);
-fs.writeFileSync('./LatestMelody.xml', xml);
+fs.writeFileSync('./outputs/' + new Date().toISOString() + '.xml', xml);
 
 
