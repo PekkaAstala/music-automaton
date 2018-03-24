@@ -35,8 +35,8 @@ function buildMeasure(number, notes) {
       obj.chord = {};
     }
     obj.pitch =  {
-      'step': { '#text': note.step },
-      'octave': { '#text': note.octave }
+      'step': { '#text': note.getStep() },
+      'octave': { '#text': note.getOctave() }
     };
     obj.duration = '4';
     obj.type = 'whole';
