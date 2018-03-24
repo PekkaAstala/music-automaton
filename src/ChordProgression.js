@@ -1,4 +1,5 @@
-function generate () {
+
+function generateMelodyInMajor () {
 	const startingPoint = [
 		1, null, null, 5,
 		1, null, null, 1,
@@ -8,4 +9,4 @@ function generate () {
 	return startingPoint.map(value => value ? value : Math.floor(Math.random() * 7) + 1);
 }
 
-module.exports = { generate };
+module.exports = { generateMelodyInMajor };
