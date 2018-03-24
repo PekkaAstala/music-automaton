@@ -1,16 +1,12 @@
-const chordsC = ['Cmaj', 'Dm', 'Em', 'F', 'G', 'Am', 'B°'];
 const notesC = [ 'C', 'D', 'E', 'F', 'G', 'A', 'B' ];
 
 const buildNote = position => {
-	if (position > 7) {
-		return {
-			octave: 4 + (position % 7 === 0 ? Math.floor(position / 7) - 1 : Math.floor(position / 7)),
-			step: notesC[position % 7 - 1]
-		};
-	}
+	const octaveIncrease = position % 7 === 0 && position !== 0 ? Math.floor(position / 7) - 1 : Math.floor(position / 7);
+	const step = position % 7 === 0 && position !== 0 ? 6 : position % 7 - 1;
+
 	return {
-		octave: 4,
-		step: notesC[position - 1]
+		octave: 4 + octaveIncrease,
+		step: notesC[step],
 	};
 };
 
