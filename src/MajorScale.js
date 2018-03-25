@@ -1,4 +1,5 @@
 const Note = require('./Note');
+const Chord = require('./Chord');
 
 const stepsByScale = {
   'C': [ 'C', 'D', 'E', 'F', 'G', 'A', 'B' ],
@@ -37,9 +38,7 @@ class MajorScale {
   }
 
   getChord(degree) {
-    return [
-      this.getNote(degree), this.getNote(degree + 2), this.getNote(degree + 4)
-    ];
+    return new Chord([this.getNote(degree), this.getNote(degree + 2), this.getNote(degree + 4)]);
   }
 
   getFifths() {

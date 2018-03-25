@@ -68,7 +68,7 @@ function toXml(title, fifths, measures) {
       'part-list': buildPartlist('P1', 'Music'),
       'part': {
         '@id': 'P1',
-        'measure': measures.map((notes, index) => buildMeasure(index + 1, fifths, notes))
+        'measure': measures.map((chord, index) => buildMeasure(index + 1, fifths, chord.getNotes()))
       }
     }
   }, 
