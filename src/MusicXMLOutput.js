@@ -23,10 +23,19 @@ function buildMeasure(number, fifths, notes) {
         'beats': { '#text': '4' },
         'beat-type': { '#text': '4' }
       },
-      'clef': {
-        'sign': { '#text': 'F' },
-        'line': { '#text': '4' }
-      }
+      'staves': 2,
+      clef: [
+        {
+          '@number': 1,
+          'sign': { '#text': 'G' },
+          'line': { '#text': '2' }
+        },
+        {
+          '@number': 2,
+          'sign': { '#text': 'F' },
+          'line': { '#text': '4' }
+        }
+      ]
     };
   }
   measure.note = notes.map((note, index) => {
@@ -42,6 +51,7 @@ function buildMeasure(number, fifths, notes) {
 
     obj.duration = '4';
     obj.type = 'whole';
+    obj.staff = 2;
         
     return obj;
   });
