@@ -1,6 +1,6 @@
 const MajorScale = require('./src/MajorScale');
 const Melody = require('./src/Melody');
-const ChordProgression = require('./src/ChordProgression');
+const ChordGenerator = require('./src/ChordGenerator');
 const NoteGenerator = require('./src/NoteGenerator');
 const MusicXMLOutput = require('./src/MusicXMLOutput');
 const fs = require('fs');
@@ -8,9 +8,9 @@ const sanitize = require('sanitize-filename');
 
 const title = 'Art at ' + new Date().toISOString();
 
-const scale = new MajorScale('C', 3);
+const scale = new MajorScale('Bb', 3);
 
-const chordProgression = ChordProgression.generateMelodyInMajor();
+const chordProgression = new ChordGenerator().generateMelodyInMajor();
 
 const chords = chordProgression.map(degree => scale.getChord(degree));
 const notes = new NoteGenerator(scale).generate(chords);

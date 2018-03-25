@@ -19,7 +19,7 @@ class NoteGenerator {
       measures.push([ upBeats[i].firstUpbeat,
         getNoteInBetween(this.scale, upBeats[i].firstUpbeat, upBeats[i].secondUpbeat),
         upBeats[i].secondUpbeat,
-        (i === upBeats.length - 1 ? upBeats[i].secondUpbeat : getNoteInBetween(this.scale, upBeats[i].secondUpbeat, upBeats[i+1].firstUpbeat))
+        (upBeats[i+1] ? getNoteInBetween(this.scale, upBeats[i].secondUpbeat, upBeats[i+1].firstUpbeat) : upBeats[i].secondUpbeat)
       ]);
     }
     return measures;
