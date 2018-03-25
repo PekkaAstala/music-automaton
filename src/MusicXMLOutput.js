@@ -36,14 +36,9 @@ function buildMeasure(number, fifths, notes) {
     }
     obj.pitch =  {
       'step': { '#text': note.getStep().substring(0, 1) },
-      'alter': 0,
+      'alter': (note.isSharp() ? 1 : note.isFlat() ? - 1 : 0),
       'octave': { '#text': note.getOctave() }
     };
-    if (note.getAccidental() === 'sharp') {
-      obj.pitch.alter = 1;
-    } else if (note.getAccidental() === 'flat') {
-      obj.pitch.alter = -1;
-    }
 
     obj.duration = '4';
     obj.type = 'whole';

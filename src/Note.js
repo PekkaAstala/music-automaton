@@ -13,14 +13,12 @@ class Note {
     return this.octave;
   }
 
-  getAccidental() {
-    if (this.step.endsWith('#')) {
-      return 'sharp';
-    } else if (this.step.endsWith('b')) {
-      return 'flat';
-    } else {
-      return null;
-    }
+  isSharp() {
+    return this.step.endsWith('#');
+  }
+
+  isFlat() {
+    return this.step.endsWith('b');
   }
 
 }
