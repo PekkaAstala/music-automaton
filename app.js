@@ -8,7 +8,7 @@ const sanitize = require('sanitize-filename');
 
 const title = 'Art at ' + new Date().toISOString();
 
-const scale = new MajorScale('Bb', 3);
+const scale = new MajorScale('C', 3);
 
 const chordProgression = ChordProgression.generateMelodyInMajor();
 
