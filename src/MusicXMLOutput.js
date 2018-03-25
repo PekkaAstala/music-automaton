@@ -58,10 +58,13 @@ function buildMeasure(number, fifths, notes) {
   return measure;
 }
 
-function toXml(fifths, measures) {
+function toXml(title, fifths, measures) {
   return builder.create({
     'score-partwise': {
       '@version': '3.1',
+      'work': {
+        'work-title': title
+      },
       'part-list': buildPartlist('P1', 'Music'),
       'part': {
         '@id': 'P1',
