@@ -21,6 +21,10 @@ class Note {
     return this.step.endsWith('b');
   }
 
+  setOctave(octave) {
+    return new Note(this.step, octave);
+  }
+
   alterOctave(amount) {
     return new Note(this.step, this.octave + amount);
   }

@@ -37,6 +37,15 @@ class MajorScale {
     return new Note (step, this.octave + octaveIncrease);
   }
 
+  getNotes() {
+    return [ 1, 2, 3, 4, 5, 6, 7 ].map(degree => this.getNote(degree));
+  }
+
+  getPositionOf(note) {
+    const stepPosition = this.steps.findIndex(step => note.getStep() === step) + 1;
+    return stepPosition + 7 * (note.getOctave() - this.getNote(stepPosition).getOctave());
+  }
+
   getChord(degree) {
     return new Chord([this.getNote(degree), this.getNote(degree + 2), this.getNote(degree + 4)]);
   }
