@@ -11,13 +11,13 @@ function buildPartlist(id, name) {
   };
 }
 
-function buildMeasure(number, notes) {
+function buildMeasure(number, fifths, notes) {
   const measure = { '@number': number };
   if (number === 1) {
     measure.attributes = {
       'divisions': { '#text': '1' },
       'key': {
-        'fifths': { '#text': '0' } 
+        'fifths': { '#text': fifths }
       },
       'time': {
         'beats': { '#text': '4' },
@@ -35,9 +35,16 @@ function buildMeasure(number, notes) {
       obj.chord = {};
     }
     obj.pitch =  {
-      'step': { '#text': note.getStep() },
+      'step': { '#text': note.getStep().substring(0, 1) },
+      'alter': 0,
       'octave': { '#text': note.getOctave() }
     };
+    if (note.getAccidental() === 'sharp') {
+      obj.pitch.alter = 1;
+    } else if (note.getAccidental() === 'flat') {
+      obj.pitch.alter = -1;
+    }
+
     obj.duration = '4';
     obj.type = 'whole';
         
@@ -46,14 +53,14 @@ function buildMeasure(number, notes) {
   return measure;
 }
 
-function toXml(measures) {
+function toXml(fifths, measures) {
   return builder.create({
     'score-partwise': {
       '@version': '3.1',
       'part-list': buildPartlist('P1', 'Music'),
       'part': {
         '@id': 'P1',
-        'measure': measures.map((notes, index) => buildMeasure(index + 1, notes))
+        'measure': measures.map((notes, index) => buildMeasure(index + 1, fifths, notes))
       }
     }
   }, 

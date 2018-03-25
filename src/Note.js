@@ -13,8 +13,14 @@ class Note {
     return this.octave;
   }
 
-  equals(otherNote) {
-    return typeof otherNote === typeof this && otherNote.octave === this.octave && otherNote.step === this.step;
+  getAccidental() {
+    if (this.step.endsWith('#')) {
+      return 'sharp';
+    } else if (this.step.endsWith('b')) {
+      return 'flat';
+    } else {
+      return null;
+    }
   }
 
 }
