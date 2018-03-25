@@ -21,6 +21,10 @@ class Note {
     return this.step.endsWith('b');
   }
 
+  alterOctave(amount) {
+    return new Note(this.step, this.octave + amount);
+  }
+
 }
 
 module.exports = Note;

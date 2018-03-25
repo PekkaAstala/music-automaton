@@ -11,13 +11,13 @@ function buildPartlist(id, name) {
   };
 }
 
-function buildMeasure(number, fifths, notes) {
-  const measure = { '@number': number };
-  if (number === 1) {
-    measure.attributes = {
+function addMeasure(parent, model) {
+  const measure = parent.ele({ 'measure': { '@number': model.number } });
+  if (model.number === 1) {
+    measure.ele({ 'attributes': {
       'divisions': { '#text': '1' },
       'key': {
-        'fifths': { '#text': fifths }
+        'fifths': { '#text': model.fifths }
       },
       'time': {
         'beats': { '#text': '4' },
@@ -36,9 +36,9 @@ function buildMeasure(number, fifths, notes) {
           'line': { '#text': '4' }
         }
       ]
-    };
+    }});
   }
-  measure.note = notes.map((note, index) => {
+  const harmonicNotes = model.harmonic.map((note, index) => {
     const obj = {};
     if (index > 0) {
       obj.chord = {};
@@ -52,31 +52,41 @@ function buildMeasure(number, fifths, notes) {
     obj.duration = '4';
     obj.type = 'whole';
     obj.staff = 2;
-        
+
     return obj;
   });
-  return measure;
+  harmonicNotes.forEach(note => measure.ele({ note }));
+
+  measure.ele({ 'backup': { 'duration': { '#text': 16 }}});
+
+  const melodicNotes = model.melodic.map(note => ({
+    'pitch': {
+      'step': { '#text': note.getStep().substring(0, 1) },
+      'alter': (note.isSharp() ? 1 : note.isFlat() ? - 1 : 0),
+      'octave': { '#text': note.getOctave() }
+    },
+    'duration': '1',
+    'type': 'quarter',
+    'staff': '1'
+  }));
+  melodicNotes.forEach(note => measure.ele({ note }));
 }
 
-function toXml(title, fifths, measures) {
-  return builder.create({
-    'score-partwise': {
-      '@version': '3.1',
-      'work': {
-        'work-title': title
-      },
-      'part-list': buildPartlist('P1', 'Music'),
-      'part': {
-        '@id': 'P1',
-        'measure': measures.map((chord, index) => buildMeasure(index + 1, fifths, chord.getNotes()))
-      }
+function toXml(melody) {
+  const root = builder.create({ 'score-partwise' : { '@version': 3.1 }},
+    { version: '1.0', encoding: 'UTF-8', standalone: 'no'},
+    {
+      pubID: '-//Recordare//DTD MusicXML 3.1 Partwise//EN',
+      sysID: 'http://www.musicxml.org/dtds/partwise.dtd'
     }
-  }, 
-  { version: '1.0', encoding: 'UTF-8', standalone: 'no'},
-  {
-    pubID: '-//Recordare//DTD MusicXML 3.1 Partwise//EN',
-    sysID: 'http://www.musicxml.org/dtds/partwise.dtd'
-  }).end({ pretty: true});
+  );
+  root.ele({ 'work': { 'work-title': melody.getTitle() }});
+  root.ele({ 'part-list': buildPartlist('P1', 'Music' )});
+  const part = root.ele({ 'part': { '@id': 'P1' }});
+
+  melody.getMeasures().forEach(measure => addMeasure(part, measure));
+
+  return root.end({ pretty: true});
 }
 
 module.exports = { toXml };
