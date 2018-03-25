@@ -22,17 +22,18 @@ const circularArray = (array, index) => {
 
 class MajorScale {
 
-  constructor(firstStep) {
+  constructor(firstStep, octave) {
     this.steps = stepsByScale[firstStep];
+    this.octave = octave;
   }
 
   getNote(position) {
     const step = circularArray(this.steps, position - 1);
     const octaveIncrease = position % 7 === 0 && position !== 0 ? Math.floor(position / 7) - 1 : Math.floor(position / 7);
     if (this.steps[0] !== 'C' && this.steps.indexOf(step) >= this.steps.findIndex(val => val.includes('C'))) {
-      return new Note (step, 5 + octaveIncrease);
+      return new Note (step, this.octave + octaveIncrease + 1);
     }
-    return new Note (step, 4 + octaveIncrease);
+    return new Note (step, this.octave + octaveIncrease);
   }
 
   getChord(degree) {

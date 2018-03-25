@@ -3,7 +3,7 @@ const MajorScale = require('./src/MajorScale');
 const MusicXMLOutput = require('./src/MusicXMLOutput');
 const fs = require('fs');
 
-const scale = new MajorScale('D');
+const scale = new MajorScale('D', 3);
 const chordProgression = ChordProgression.generateMelodyInMajor();
 const measures = chordProgression.map(degree => scale.getChord(degree));
 

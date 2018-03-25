@@ -24,8 +24,8 @@ function buildMeasure(number, fifths, notes) {
         'beat-type': { '#text': '4' }
       },
       'clef': {
-        'sign': { '#text': 'G' },
-        'line': { '#text': '2' }
+        'sign': { '#text': 'F' },
+        'line': { '#text': '4' }
       }
     };
   }
