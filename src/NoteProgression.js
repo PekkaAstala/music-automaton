@@ -1,10 +1,8 @@
 function generate(chords) {
-  return chords.map(chord => [
-    chord.getNotes()[1].alterOctave(1),
-    chord.getNotes()[1].alterOctave(1),
-    chord.getNotes()[1].alterOctave(1),
-    chord.getNotes()[1].alterOctave(1),
-  ]);
+  return chords.map(chord => {
+    const randomNoteInChord = chord.getNotes()[Math.floor(Math.random() * 3)].alterOctave(1);
+    return [ randomNoteInChord, randomNoteInChord, randomNoteInChord, randomNoteInChord ];
+  });
 }
 
 module.exports = { generate };
