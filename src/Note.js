@@ -26,20 +26,12 @@ class Note {
     return this.step.endsWith('b');
   }
 
-  setOctave(octave) {
+  inOctave(octave) {
     return new Note(this.step, octave, this.duration);
   }
 
-  alterOctave(amount) {
-    return new Note(this.step, this.octave + amount);
-  }
-
-  asQuarterNote() {
-    return new Note(this.step, this.octave, 'quarter');
-  }
-
-  asWholeNote() {
-    return new Note(this.step, this.octave, 'whole');
+  withDuration(duration) {
+    return new Note(this.step, this.octave, duration);
   }
 
 }
