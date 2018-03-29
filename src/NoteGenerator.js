@@ -1,5 +1,6 @@
 function getNoteInBetween(scale, noteA, noteB) {
-  return scale.getNote(Math.floor((scale.getPositionOf(noteA) + scale.getPositionOf(noteB)) / 2));
+  const range = scale.getNoteRange(noteA, noteB);
+  return range[Math.floor(range.length / 2)];
 }
 
 class NoteGenerator {
@@ -10,8 +11,8 @@ class NoteGenerator {
 
   generate(chords) {
     const upBeats = chords.map(chord => {
-      const firstRandomChord = chord.getNotes()[Math.floor(Math.random() * 3)];
-      const secondRandomChord = chord.getNotes()[Math.floor(Math.random() * 3)];
+      const firstRandomChord = chord.toNotes(4, 'quarter')[Math.floor(Math.random() * 3)];
+      const secondRandomChord = chord.toNotes(4, 'quarter')[Math.floor(Math.random() * 3)];
 
       return {
         firstUpbeat: firstRandomChord.inOctave(firstRandomChord.getOctave() + 1),

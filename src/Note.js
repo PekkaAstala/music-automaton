@@ -26,6 +26,14 @@ class Note {
     return this.step.endsWith('b');
   }
 
+  isBelow(otherNote) {
+    if (this.octave < otherNote.octave) {
+      return true;
+    }
+    const indexes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    return indexes.indexOf(this.step.substring(0, 1)) < indexes.indexOf(otherNote.step.substring(0, 1));
+  }
+
   inOctave(octave) {
     return new Note(this.step, octave, this.duration);
   }

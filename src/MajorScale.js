@@ -23,31 +23,17 @@ const circularArray = (array, index) => {
 
 class MajorScale {
 
-  constructor(firstStep, octave) {
+  constructor(firstStep) {
     this.steps = stepsByScale[firstStep];
-    this.octave = octave;
   }
 
-  getNote(position, duration = 'quarter') {
-    const step = circularArray(this.steps, position - 1);
-    const octaveIncrease = position % 7 === 0 && position !== 0 ? Math.floor(position / 7) - 1 : Math.floor(position / 7);
-    if (this.steps[0] !== 'C' && this.steps.indexOf(step) >= this.steps.findIndex(val => val.includes('C'))) {
-      return new Note (step, this.octave + octaveIncrease + 1, duration);
-    }
-    return new Note (step, this.octave + octaveIncrease, duration);
+  getStep(degree) {
+    return circularArray(this.steps, degree - 1);
   }
 
-  getNotes() {
-    return [ 1, 2, 3, 4, 5, 6, 7 ].map(degree => this.getNote(degree));
-  }
-
-  getPositionOf(note) {
-    const stepPosition = this.steps.findIndex(step => note.getStep() === step) + 1;
-    return stepPosition + 7 * (note.getOctave() - this.getNote(stepPosition).getOctave());
-  }
-
-  getChord(degree, duration) {
-    return new Chord([this.getNote(degree, duration), this.getNote(degree + 2, duration), this.getNote(degree + 4, duration)]);
+  getChord(degree) {
+    const types = [ 'Major', 'minor', 'minor', 'Major', 'Major', 'minor', 'dim' ];
+    return new Chord([this.getStep(degree), this.getStep(degree + 2), this.getStep(degree + 4)], types[degree - 1]);
   }
 
   getFifths() {
@@ -56,6 +42,23 @@ class MajorScale {
     } else {
       return this.steps.filter(step => step.endsWith('#')).length;
     }
+  }
+
+  stepUp(note) {
+    const index = this.steps.indexOf(note.getStep);
+    if (index === this.steps.length - 1) {
+      return new Note(this.steps[0], note.getOctave() + 1, note.getDuration());
+    } else {
+      return new Note(this.steps[index + 1], note.getOctave(), note.getDuration());
+    }
+  }
+
+  getNoteRange(firstNote, lastNote) {
+    const range = [firstNote];
+    for (let cur = firstNote; cur.isBelow(lastNote); cur = this.stepUp(cur)) {
+      range.push(cur);
+    }
+    return range;
   }
 
 }

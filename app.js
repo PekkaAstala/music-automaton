@@ -8,16 +8,17 @@ const sanitize = require('sanitize-filename');
 
 const title = 'Art at ' + new Date().toISOString();
 
-const scale = new MajorScale('Bb', 3);
+const scale = new MajorScale('Bb');
+const chords = new ChordGenerator(scale).generate();
 
-const chordProgression = new ChordGenerator().generateMelodyInMajor();
+const harmonicMeasures = chords.map(chord => chord.toNotes(2, 'whole'));
+const melodicMeasures = new NoteGenerator(scale).generate(chords);
 
-const chords = chordProgression.map(degree => scale.getChord(degree, 'whole'));
-const notes = new NoteGenerator(scale).generate(chords);
-const melody = new Melody(title, scale.getFifths(), chords, notes);
+const melody = new Melody(title, scale.getFifths(), harmonicMeasures, melodicMeasures);
 
 const xml = MusicXMLOutput.toXml(melody);
 
 const outputFileName = './outputs/' + sanitize(title, { replacement: '-' }) + '.xml';
 
 fs.writeFileSync(outputFileName, xml);
+

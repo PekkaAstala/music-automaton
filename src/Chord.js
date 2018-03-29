@@ -1,11 +1,22 @@
+const Note = require('./Note');
+
 class Chord {
 
-  constructor(notes) {
-    this.notes = notes;
+  constructor(steps, type) {
+    this.steps = steps;
+    this.type = type;
   }
 
-  getNotes() {
-    return this.notes;
+  getSteps() {
+    return this.steps;
+  }
+
+  getType() {
+    return this.type;
+  }
+
+  toNotes(octaveOfFirstNote, duration) {
+    return this.steps.map(step => new Note(step, octaveOfFirstNote, duration));
   }
 
 }
