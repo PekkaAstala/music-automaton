@@ -12,7 +12,7 @@ const scale = new MajorScale('Bb', 3);
 
 const chordProgression = new ChordGenerator().generateMelodyInMajor();
 
-const chords = chordProgression.map(degree => scale.getChord(degree));
+const chords = chordProgression.map(degree => scale.getChord(degree, 'whole'));
 const notes = new NoteGenerator(scale).generate(chords);
 const melody = new Melody(title, scale.getFifths(), chords, notes);
 

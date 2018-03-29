@@ -16,11 +16,15 @@ class NoteGenerator {
 
     const measures = [];
     for (let i = 0; i < upBeats.length; i++) {
-      measures.push([ upBeats[i].firstUpbeat,
-        getNoteInBetween(this.scale, upBeats[i].firstUpbeat, upBeats[i].secondUpbeat),
-        upBeats[i].secondUpbeat,
-        (upBeats[i+1] ? getNoteInBetween(this.scale, upBeats[i].secondUpbeat, upBeats[i+1].firstUpbeat) : upBeats[i].secondUpbeat)
-      ]);
+      if (i === upBeats.length - 1) {
+        measures.push([upBeats[i].firstUpbeat.asWholeNote()])
+      } else {
+        measures.push([ upBeats[i].firstUpbeat,
+          getNoteInBetween(this.scale, upBeats[i].firstUpbeat, upBeats[i].secondUpbeat),
+          upBeats[i].secondUpbeat,
+          (upBeats[i+1] ? getNoteInBetween(this.scale, upBeats[i].secondUpbeat, upBeats[i+1].firstUpbeat) : upBeats[i].secondUpbeat)
+        ]);
+      }
     }
     return measures;
   }

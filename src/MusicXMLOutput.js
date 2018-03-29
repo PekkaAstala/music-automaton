@@ -49,8 +49,8 @@ function addMeasure(parent, model) {
       'octave': { '#text': note.getOctave() }
     };
 
-    obj.duration = '4';
-    obj.type = 'whole';
+    obj.duration = note.getDuration() === 'quarter' ? 1 : 4;
+    obj.type = note.getDuration();
     obj.staff = 2;
 
     return obj;
@@ -65,8 +65,8 @@ function addMeasure(parent, model) {
       'alter': (note.isSharp() ? 1 : note.isFlat() ? - 1 : 0),
       'octave': { '#text': note.getOctave() }
     },
-    'duration': '1',
-    'type': 'quarter',
+    'duration': note.getDuration() === 'quarter' ? 1 : 4,
+    'type': note.getDuration(),
     'staff': '1'
   }));
   melodicNotes.forEach(note => measure.ele({ note }));

@@ -28,13 +28,13 @@ class MajorScale {
     this.octave = octave;
   }
 
-  getNote(position) {
+  getNote(position, duration = 'quarter') {
     const step = circularArray(this.steps, position - 1);
     const octaveIncrease = position % 7 === 0 && position !== 0 ? Math.floor(position / 7) - 1 : Math.floor(position / 7);
     if (this.steps[0] !== 'C' && this.steps.indexOf(step) >= this.steps.findIndex(val => val.includes('C'))) {
-      return new Note (step, this.octave + octaveIncrease + 1);
+      return new Note (step, this.octave + octaveIncrease + 1, duration);
     }
-    return new Note (step, this.octave + octaveIncrease);
+    return new Note (step, this.octave + octaveIncrease, duration);
   }
 
   getNotes() {
@@ -46,8 +46,8 @@ class MajorScale {
     return stepPosition + 7 * (note.getOctave() - this.getNote(stepPosition).getOctave());
   }
 
-  getChord(degree) {
-    return new Chord([this.getNote(degree), this.getNote(degree + 2), this.getNote(degree + 4)]);
+  getChord(degree, duration) {
+    return new Chord([this.getNote(degree, duration), this.getNote(degree + 2, duration), this.getNote(degree + 4, duration)]);
   }
 
   getFifths() {

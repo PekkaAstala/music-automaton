@@ -1,8 +1,9 @@
 class Note {
 
-  constructor(step, octave) {
+  constructor(step, octave, duration = 'quarter') {
     this.step = step;
     this.octave = octave;
+    this.duration = duration;
   }
 
   getStep() {
@@ -11,6 +12,10 @@ class Note {
 
   getOctave() {
     return this.octave;
+  }
+
+  getDuration() {
+    return this.duration;
   }
 
   isSharp() {
@@ -22,11 +27,19 @@ class Note {
   }
 
   setOctave(octave) {
-    return new Note(this.step, octave);
+    return new Note(this.step, octave, this.duration);
   }
 
   alterOctave(amount) {
     return new Note(this.step, this.octave + amount);
+  }
+
+  asQuarterNote() {
+    return new Note(this.step, this.octave, 'quarter');
+  }
+
+  asWholeNote() {
+    return new Note(this.step, this.octave, 'whole');
   }
 
 }
