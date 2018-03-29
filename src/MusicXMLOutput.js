@@ -11,6 +11,24 @@ function buildPartlist(id, name) {
   };
 }
 
+function noteToMusicXMLObject(note, continuesChord, staff) {
+  const obj = {};
+  if (continuesChord) {
+    obj.chord = {};
+  }
+  obj.pitch =  {
+    'step': { '#text': note.getStep().substring(0, 1) },
+    'alter': (note.isSharp() ? 1 : note.isFlat() ? - 1 : 0),
+    'octave': { '#text': note.getOctave() }
+  };
+
+  obj.duration = note.getDuration() === 'quarter' ? 1 : 4;
+  obj.type = note.getDuration();
+  obj.staff = staff;
+
+  return obj;
+}
+
 function addMeasure(parent, model) {
   const measure = parent.ele({ 'measure': { '@number': model.number } });
   if (model.number === 1) {
@@ -38,37 +56,12 @@ function addMeasure(parent, model) {
       ]
     }});
   }
-  const harmonicNotes = model.harmonic.map((note, index) => {
-    const obj = {};
-    if (index > 0) {
-      obj.chord = {};
-    }
-    obj.pitch =  {
-      'step': { '#text': note.getStep().substring(0, 1) },
-      'alter': (note.isSharp() ? 1 : note.isFlat() ? - 1 : 0),
-      'octave': { '#text': note.getOctave() }
-    };
-
-    obj.duration = note.getDuration() === 'quarter' ? 1 : 4;
-    obj.type = note.getDuration();
-    obj.staff = 2;
-
-    return obj;
-  });
+  const harmonicNotes = model.harmonic.map((note, index) => noteToMusicXMLObject(note, index > 0, 2));
   harmonicNotes.forEach(note => measure.ele({ note }));
 
   measure.ele({ 'backup': { 'duration': { '#text': 16 }}});
 
-  const melodicNotes = model.melodic.map(note => ({
-    'pitch': {
-      'step': { '#text': note.getStep().substring(0, 1) },
-      'alter': (note.isSharp() ? 1 : note.isFlat() ? - 1 : 0),
-      'octave': { '#text': note.getOctave() }
-    },
-    'duration': note.getDuration() === 'quarter' ? 1 : 4,
-    'type': note.getDuration(),
-    'staff': '1'
-  }));
+  const melodicNotes = model.melodic.map(note => noteToMusicXMLObject(note, false, 1));
   melodicNotes.forEach(note => measure.ele({ note }));
 }
 
