@@ -46,10 +46,10 @@ class MajorScale {
 
   stepUp(note) {
     const index = this.steps.indexOf(note.getStep());
-    if (index === this.steps.length - 1) {
-      return new Note(this.steps[0], note.getOctave() + 1, note.getDuration());
+    if (index === this.steps.findIndex(step => step.substring(0, 1) === 'C') -1) {
+      return new Note(circularArray(this.steps, index + 1), note.getOctave() + 1, note.getDuration());
     } else {
-      return new Note(this.steps[index + 1], note.getOctave(), note.getDuration());
+      return new Note(circularArray(this.steps, index + 1), note.getOctave(), note.getDuration());
     }
   }
 
@@ -60,7 +60,7 @@ class MajorScale {
 
     const rangeAscending = (noteA, noteB) => {
       const range = [ noteA ];
-      for (let cur = this.stepUp(noteA); cur.isBelow(noteB); cur = this.stepUp(cur)) {
+      for (let cur = this.stepUp(noteA); cur.isBelow(noteB) || cur.equals(noteB); cur = this.stepUp(cur)) {
         range.push(cur);
       }
       return range;

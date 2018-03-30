@@ -15,8 +15,8 @@ class NoteGenerator {
       const secondRandomChord = chord.toNotes(4, 'quarter')[Math.floor(Math.random() * 3)];
 
       return {
-        firstUpbeat: firstRandomChord.inOctave(firstRandomChord.getOctave() + 1),
-        secondUpbeat: secondRandomChord.inOctave(secondRandomChord.getOctave() + 1)
+        firstUpbeat: firstRandomChord.inOctave(firstRandomChord.getOctave()),
+        secondUpbeat: secondRandomChord.inOctave(secondRandomChord.getOctave())
       };
     });
 
