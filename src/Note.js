@@ -26,6 +26,10 @@ class Note {
     return this.step.endsWith('b');
   }
 
+  equals(otherNote) {
+    return this.octave === otherNote.octave && this.step === otherNote.step;
+  }
+
   isBelow(otherNote) {
     if (this.octave < otherNote.octave) {
       return true;
