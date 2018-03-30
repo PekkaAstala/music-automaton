@@ -16,7 +16,16 @@ class Chord {
   }
 
   toNotes(octaveOfFirstNote, duration) {
-    return this.steps.map(step => new Note(step, octaveOfFirstNote, duration));
+    const notes = [];
+    for (let i = 0; i < this.steps.length; i++) {
+      const note = new Note(this.steps[i], octaveOfFirstNote, duration);
+      if (i === 0 || !note.isBelow(notes[i-1])) {
+        notes.push(note);
+      } else {
+        notes.push(note.inOctave(note.getOctave() + 1));
+      }
+    }
+    return notes;
   }
 
 }
