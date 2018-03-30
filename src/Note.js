@@ -31,11 +31,12 @@ class Note {
   }
 
   isBelow(otherNote) {
-    if (this.octave < otherNote.octave) {
-      return true;
+    if (this.octave === otherNote.octave) {
+      const indexes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+      return indexes.indexOf(this.step.substring(0, 1)) < indexes.indexOf(otherNote.step.substring(0, 1));
+    } else {
+      return this.octave < otherNote.octave;
     }
-    const indexes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-    return indexes.indexOf(this.step.substring(0, 1)) < indexes.indexOf(otherNote.step.substring(0, 1));
   }
 
   inOctave(octave) {

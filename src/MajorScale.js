@@ -46,11 +46,30 @@ class MajorScale {
 
   stepUp(note) {
     const index = this.steps.indexOf(note.getStep());
-    if (index === this.steps.findIndex(step => step.substring(0, 1) === 'C') -1) {
-      return new Note(circularArray(this.steps, index + 1), note.getOctave() + 1, note.getDuration());
-    } else {
-      return new Note(circularArray(this.steps, index + 1), note.getOctave(), note.getDuration());
+    let step = this.steps[index + 1];
+    if (step === undefined) {
+      step = this.steps[0];
     }
+    let octave = note.getOctave();
+    if (step.substring(0, 1) === 'C') {
+      octave = octave + 1;
+    }
+
+    return new Note(step, octave, note.getDuration());
+  }
+
+  stepDown(note) {
+    const index = this.steps.indexOf(note.getStep());
+    let step = this.steps[index - 1];
+    if (step === undefined) {
+      step = this.steps[this.steps.length - 1];
+    }
+    let octave = note.getOctave();
+    if (step.substring(0, 1) === 'B') {
+      octave = octave - 1;
+    }
+
+    return new Note(step, octave, note.getDuration());
   }
 
   getNoteRange(firstNote, lastNote) {
@@ -66,7 +85,15 @@ class MajorScale {
       return range;
     };
 
-    return firstNote.isBelow(lastNote) ? rangeAscending(firstNote, lastNote) : rangeAscending(lastNote, firstNote).reverse();
+    const rangeDescending = (noteA, noteB) => {
+      const range = [ noteA ];
+      for (let cur = this.stepDown(noteA); noteB.isBelow(cur) || cur.equals(noteB); cur = this.stepDown(cur)) {
+        range.push(cur);
+      }
+      return range;
+    };
+
+    return firstNote.isBelow(lastNote) ? rangeAscending(firstNote, lastNote) : rangeDescending(firstNote, lastNote);
   }
 
 }
