@@ -45,7 +45,7 @@ class MajorScale {
   }
 
   stepUp(note) {
-    const index = this.steps.indexOf(note.getStep);
+    const index = this.steps.indexOf(note.getStep());
     if (index === this.steps.length - 1) {
       return new Note(this.steps[0], note.getOctave() + 1, note.getDuration());
     } else {
