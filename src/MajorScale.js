@@ -54,11 +54,15 @@ class MajorScale {
   }
 
   getNoteRange(firstNote, lastNote) {
-    const range = [firstNote];
-    for (let cur = firstNote; cur.isBelow(lastNote); cur = this.stepUp(cur)) {
-      range.push(cur);
-    }
-    return range;
+    const rangeAscending = (noteA, noteB) => {
+      const range = [ noteA ];
+      for (let cur = this.stepUp(noteA); cur.isBelow(noteB); cur = this.stepUp(cur)) {
+        range.push(cur);
+      }
+      return range;
+    };
+
+    return firstNote.isBelow(lastNote) ? rangeAscending(firstNote, lastNote) : rangeAscending(lastNote, firstNote).reverse();
   }
 
 }
