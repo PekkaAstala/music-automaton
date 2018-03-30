@@ -11,7 +11,7 @@ const title = 'Art at ' + new Date().toISOString();
 const scale = new MajorScale('Bb');
 const chords = new ChordGenerator(scale).generate();
 
-const harmonicMeasures = chords.map(chord => chord.toNotes(2, 'whole'));
+const harmonicMeasures = chords.map(chord => chord.toNotes(3, 'whole'));
 const melodicMeasures = new NoteGenerator(scale).generate(chords);
 
 const melody = new Melody(title, scale.getFifths(), harmonicMeasures, melodicMeasures);

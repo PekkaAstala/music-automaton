@@ -56,6 +56,7 @@ function addMeasure(parent, model) {
       ]
     }});
   }
+
   const harmonicNotes = model.harmonic.map((note, index) => noteToMusicXMLObject(note, index > 0, 2));
   harmonicNotes.forEach(note => measure.ele({ note }));
 
