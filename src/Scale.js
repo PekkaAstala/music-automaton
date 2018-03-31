@@ -54,6 +54,7 @@ class Scale {
     if (this.mode == 'I'){
       //calls a function that cares about creating the proper scale array
       //this.steps = KeyIds[firstStep];
+      this.steps = stepsByMajorScale[firstStep];
     }
 
     else if (this.mode == 'VI'){
