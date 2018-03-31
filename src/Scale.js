@@ -1,6 +1,3 @@
-// Maybe this class could be simply a "scale" class, taking firstStep AND mode as parameters, with 3 dimensional arrays for minor scales
-// firstStep should probably be named "tonic" or "keyName"
-
 const Note = require('./Note');
 const Chord = require('./Chord');
 
@@ -48,17 +45,17 @@ const circularArray = (array, index) => {
 
 class Scale {
 
-  constructor(firstStep, mode) {
+  constructor(tonic, mode) {
     //case if scale entry doesn't match, find enharmonic degree
     this.mode = mode;
     if (this.mode == 'I'){
       //calls a function that cares about creating the proper scale array
-      //this.steps = KeyIds[firstStep];
-      this.steps = stepsByMajorScale[firstStep];
+      //this.steps = KeyIds[tonic];
+      this.steps = stepsByMajorScale[tonic];
     }
 
     else if (this.mode == 'VI'){
-      this.steps = stepsByMinorScale[firstStep];
+      this.steps = stepsByMinorScale[tonic];
     }
 
   }
