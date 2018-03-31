@@ -145,26 +145,21 @@ class Scale {
 
     // 1- create an array with the proper note names const NotesOrder = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
-    scaleArray = [];
-    while (i < 7){
+    const scaleArray = [];
+
+    for (let i = 0; i < 7; i++) {
       scaleArray.push(NotesOrder[this.firstStep] + i);
-      i++;
     }
 
-    i = 0; // necessary?
-
-    while (i < scaleArray.length()) {
+    for (let i = 0; i < scaleArray.length(); i++) {
       scaleArray.push(NotesOrder[this.firstStep] + i);
-      i++;
     }
-
-    i = 0;
 
     //2- verify if distances are okay (if distance between array [0] and [1] == Major Steps [0])  --> const MajorSteps = ['2', '2', '1', '2', '2', '2', '1']
     //if < or > replace with appropriate note -- chose one with the appropriate number that match the name of the notes
 
-    while (i < scaleArray.length()) {
-
+    let noteName, noteKeyID;
+    for (let i = 0; i < scaleArray.length(); i++) {
       if (KeyID[scaleArray[i+1]] - KeyID[scaleArray[i]] < MajorSteps[i] ){
 
         noteName = scaleArray[i+1];
@@ -188,9 +183,6 @@ class Scale {
         // imcomplete
 
       }
-
-      i++;
-
     }
 
     return scaleArray;
