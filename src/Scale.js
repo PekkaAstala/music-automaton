@@ -51,7 +51,7 @@ class Scale {
   constructor(firstStep, mode) {
     //case if scale entry doesn't match, find enharmonic degree
     this.mode = mode;
-    if (this.mode == this.mode == 'I'){
+    if (this.mode == 'I'){
       //calls a function that cares about creating the proper scale array
       //this.steps = KeyIds[firstStep];
     }
@@ -59,7 +59,6 @@ class Scale {
     else if (this.mode == 'VI'){
       this.steps = stepsByMinorScale[firstStep];
     }
-
 
   }
 
