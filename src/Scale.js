@@ -201,4 +201,4 @@ class Scale {
 
 }
 
-module.exports = MajorScale;
+module.exports = Scale;
