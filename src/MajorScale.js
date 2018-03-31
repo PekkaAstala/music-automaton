@@ -24,6 +24,7 @@ const circularArray = (array, index) => {
 class MajorScale {
 
   constructor(firstStep) {
+    //if scale entry doesn't match, find enharmonic degree
     this.steps = stepsByScale[firstStep];
   }
 
@@ -95,6 +96,7 @@ class MajorScale {
 
     return firstNote.isBelow(lastNote) ? rangeAscending(firstNote, lastNote) : rangeDescending(firstNote, lastNote);
   }
+
 
 }
 
