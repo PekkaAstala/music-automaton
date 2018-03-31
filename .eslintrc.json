@@ -17,6 +17,8 @@
             "error",
             "unix"
         ],
+        "no-multiple-empty-lines": "error",
+        "no-trailing-spaces": "error",
         "quotes": [
             "error",
             "single"
