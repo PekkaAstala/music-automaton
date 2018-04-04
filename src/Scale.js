@@ -2,7 +2,7 @@ const Note = require('./Note');
 const Chord = require('./Chord');
 
 const NotesOrder = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-const MajorSteps = ['2', '2', '1', '2', '2', '2', '1'];
+const MajorSteps = [2, 2, 1, 2, 2, 2, 1];
 const KeyIds =
 {'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3,'Eb': 3, 'E': 4, 'E#': 5, 'Fb': 4,
   'F': 5, 'F#': 6, 'Gb': 6,'G': 7,'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10,
@@ -142,44 +142,34 @@ class Scale {
   getMajorScale(tonic) { //add "mode' as a parameter in the full version
 
     // 1- create an array with the proper note names const NotesOrder = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-    const scaleArray = [];
 
-
-    for (let i = 0; i < 7; i++) {
-      scaleArray.push(NotesOrder[tonic] + i);
-    }
-
-    for (let i = 0; i < scaleArray.length; i++) {
-      scaleArray.push(NotesOrder[tonic] + i);
-    }
+    const indexOfTonic = NotesOrder.findIndex(element => tonic.startsWith(element));
+    const scaleArray = NotesOrder.slice(indexOfTonic, 7).concat(NotesOrder.slice(0, indexOfTonic));
+    scaleArray[0] = tonic;
 
     //2- verify if distances are okay (if distance between array [0] and [1] == Major Steps [0])  --> const MajorSteps = ['2', '2', '1', '2', '2', '2', '1']
     //if < or > replace with appropriate note -- chose one with the appropriate number that match the name of the notes
 
-    //let noteName, noteKeyID;
-    for (let i = 0; i < scaleArray.length(); i++) {
-      let noteName, noteKeyID;
-      if (KeyIds[scaleArray[i+1]] - KeyIds[scaleArray[i]] < MajorSteps[i] ){
-        noteName = scaleArray[i+1];
-        noteKeyID = KeyIds[scaleArray[i]];
-        // incomplete
+    for (let i = 0; i < scaleArray.length - 1; i++) {
 
+      let idCur = KeyIds[scaleArray[i]];
+      let idNext = KeyIds[scaleArray[i+1]];
+
+      let differencesInIds;
+      if (idCur > idNext) {
+        differencesInIds = idNext - idCur + 12;
+      } else {
+        differencesInIds = idNext - idCur;
       }
 
-      if (KeyIds[scaleArray[i+1]] - KeyIds[scaleArray[i]] > MajorSteps[i] ){
-        noteName = scaleArray[i+1];
-        noteKeyID = KeyIds[scaleArray[i]];
-        // incomplete
-
+      if (differencesInIds < MajorSteps[i] ){
+        scaleArray[i+1] = scaleArray[i+1] + '#';
       }
 
-      if (KeyIds[scaleArray[i+1]] - KeyIds[scaleArray[i]] == MajorSteps[i] ){
-
-        noteName = scaleArray[i+1];
-        noteKeyID = KeyIds[scaleArray[i]];
-        // incomplete
-
+      if (differencesInIds > MajorSteps[i] ){
+        scaleArray[i+1] = scaleArray[i+1] + 'b';
       }
+
     }
 
     return scaleArray;
