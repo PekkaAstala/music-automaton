@@ -4,6 +4,8 @@ class Note {
     this.step = step;
     this.octave = octave;
     this.duration = duration;
+    //notes might need an alteration attribute?  How are tey going to be treated in the future
+    // for future possible MIDI functions, could be interesting to use MIDI note ID attribute
   }
 
   getStep() {

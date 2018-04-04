@@ -1,30 +1,65 @@
 const Note = require('./Note');
 const Chord = require('./Chord');
 
-const stepsByScale = {
-  'C': [ 'C', 'D', 'E', 'F', 'G', 'A', 'B' ],
-  'D': [ 'D', 'E', 'F#', 'G', 'A', 'B', 'C#' ],
-  'E': [ 'E', 'F#', 'G#', 'A', 'B', 'C#', 'D#' ],
-  'F': [ 'F', 'G', 'A', 'Bb', 'C', 'D', 'E' ],
-  'G': [ 'G', 'A', 'B', 'C', 'D', 'E', 'F#' ],
-  'A': [ 'A', 'B', 'C#', 'D', 'E', 'F#', 'G#' ],
-  'B': [ 'B', 'C#', 'D#', 'E', 'F#', 'G#', 'A#' ],
-  'Db': [ 'Db', 'Eb', 'F', 'Gb', 'Ab', 'Bb', 'C' ],
-  'Eb': [ 'Eb', 'F', 'G', 'Ab', 'Bb', 'C' ],
-  'F#': [ 'F#', 'G#', 'A#', 'B', 'C#', 'D#', 'E#' ],
-  'Ab': [ 'Ab', 'Bb', 'C', 'Db', 'Eb', 'F', 'G' ],
-  'Bb': [ 'Bb', 'C', 'D', 'Eb', 'F', 'G', 'A' ]
-};
+const NotesOrder = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+const MajorSteps = [2, 2, 1, 2, 2, 2, 1];
+const KeyIds =
+{'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3,'Eb': 3, 'E': 4, 'E#': 5, 'Fb': 4,
+  'F': 5, 'F#': 6, 'Gb': 6,'G': 7,'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10,
+  'B': 11, 'B#': 0, 'Cb': 11,};
 
 const circularArray = (array, index) => {
   const calculatedIndex = ((index + 1) % array.length) - 1;
   return calculatedIndex < 0 ? array[calculatedIndex + array.length] : array[calculatedIndex];
 };
 
-class MajorScale {
+const modeIndexes = {
+  'I': 0,
+  'II': 1,
+  'III': 2,
+  'IV': 3,
+  'V': 4,
+  'VI': 5,
+  'VII': 6
+};
 
-  constructor(firstStep) {
-    this.steps = stepsByScale[firstStep];
+const getScale = function(tonic, mode) {
+  const indexOfTonic = NotesOrder.findIndex(element => tonic.startsWith(element));
+  const scaleArray = NotesOrder.slice(indexOfTonic, 7).concat(NotesOrder.slice(0, indexOfTonic));
+  scaleArray[0] = tonic;
+
+  const modeSteps = MajorSteps.slice(modeIndexes[mode], 7).concat(MajorSteps.slice(0, modeIndexes[mode]));
+
+  for (let i = 0; i < scaleArray.length - 1; i++) {
+
+    let idCur = KeyIds[scaleArray[i]];
+    let idNext = KeyIds[scaleArray[i+1]];
+
+    let differencesInIds;
+    if (idCur > idNext) {
+      differencesInIds = idNext - idCur + 12;
+    } else {
+      differencesInIds = idNext - idCur;
+    }
+
+    if (differencesInIds < modeSteps[i] ){
+      scaleArray[i+1] = scaleArray[i+1] + '#';
+    }
+
+    if (differencesInIds > modeSteps[i] ){
+      scaleArray[i+1] = scaleArray[i+1] + 'b';
+    }
+
+  }
+
+  return scaleArray;
+};
+
+class Scale {
+
+  constructor(tonic, mode) {
+    this.mode = mode;
+    this.steps = getScale(tonic, mode);
   }
 
   getStep(degree) {
@@ -98,4 +133,4 @@ class MajorScale {
 
 }
 
-module.exports = MajorScale;
+module.exports = Scale;
