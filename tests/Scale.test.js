@@ -64,3 +64,9 @@ test('Generates inclusive note range descending', () => {
     new Note('G', 3)
   ]);
 });
+
+test('Creating a Major Scale from tonic (getMajorScale)', () => {
+  const major = new Scale('Bb', 'I');
+  const majorScale = major.getMajorScale('Bb');
+  expect(majorScale).toEqual(['Bb', 'C', 'D', 'Eb', 'F', 'G', 'A']);
+});

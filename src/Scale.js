@@ -51,7 +51,8 @@ class Scale {
     if (this.mode == 'I'){
       //calls a function that cares about creating the proper scale array
       //this.steps = KeyIds[tonic];
-      this.steps = stepsByMajorScale[tonic];
+      //this.steps = stepsByMajorScale[tonic];
+      this.steps = this.getMajorScale(tonic);
     }
 
     else if (this.mode == 'VI'){
@@ -130,54 +131,53 @@ class Scale {
   }
 
   /**
-  * This function creates an array of strings containing the notes of a given scale (firstStep) accordingly to to the
+  * This function creates an array of strings containing the notes of a given scale (tonic) accordingly to to the
   * mode (mode) given as parameter.
   *
-  * @param {string} firstStep       first note of the scale (tonic or name of the key)
+  * @param {string} tonic       first note of the scale (tonic or name of the key)
   * @param {mode} string            mode of the scale represented by a roman number from I to VII (I = Major VI = minor)
   * @return {array}                 returns an array of strings representing the degrees of the scale.
   */
 
-  getMajorScale(firstStep, mode) {
+  getMajorScale(tonic) { //add "mode' as a parameter in the full version
 
     // 1- create an array with the proper note names const NotesOrder = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-
     const scaleArray = [];
 
+
     for (let i = 0; i < 7; i++) {
-      scaleArray.push(NotesOrder[this.firstStep] + i);
+      scaleArray.push(NotesOrder[tonic] + i);
     }
 
-    for (let i = 0; i < scaleArray.length(); i++) {
-      scaleArray.push(NotesOrder[this.firstStep] + i);
+    for (let i = 0; i < scaleArray.length; i++) {
+      scaleArray.push(NotesOrder[tonic] + i);
     }
 
     //2- verify if distances are okay (if distance between array [0] and [1] == Major Steps [0])  --> const MajorSteps = ['2', '2', '1', '2', '2', '2', '1']
     //if < or > replace with appropriate note -- chose one with the appropriate number that match the name of the notes
 
-    let noteName, noteKeyID;
+    //let noteName, noteKeyID;
     for (let i = 0; i < scaleArray.length(); i++) {
-      if (KeyID[scaleArray[i+1]] - KeyID[scaleArray[i]] < MajorSteps[i] ){
-
+      let noteName, noteKeyID;
+      if (KeyIds[scaleArray[i+1]] - KeyIds[scaleArray[i]] < MajorSteps[i] ){
         noteName = scaleArray[i+1];
-        noteKeyID = KeyID[scaleArray[i]];
-        // imcomplete
+        noteKeyID = KeyIds[scaleArray[i]];
+        // incomplete
 
       }
 
-      if (KeyID[scaleArray[i+1]] - KeyID[scaleArray[i]] < MajorSteps[i] ){
-
+      if (KeyIds[scaleArray[i+1]] - KeyIds[scaleArray[i]] > MajorSteps[i] ){
         noteName = scaleArray[i+1];
-        noteKeyID = KeyID[scaleArray[i]];
-        // imcomplete
+        noteKeyID = KeyIds[scaleArray[i]];
+        // incomplete
 
       }
 
-      if (KeyID[scaleArray[i+1]] - KeyID[scaleArray[i]] < MajorSteps[i] ){
+      if (KeyIds[scaleArray[i+1]] - KeyIds[scaleArray[i]] == MajorSteps[i] ){
 
         noteName = scaleArray[i+1];
-        noteKeyID = KeyID[scaleArray[i]];
-        // imcomplete
+        noteKeyID = KeyIds[scaleArray[i]];
+        // incomplete
 
       }
     }
