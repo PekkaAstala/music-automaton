@@ -100,25 +100,12 @@ class Scale {
     return firstNote.isBelow(lastNote) ? rangeAscending(firstNote, lastNote) : rangeDescending(firstNote, lastNote);
   }
 
-  /**
-  * This function creates an array of strings containing the notes of a given scale (tonic) accordingly to to the
-  * mode (mode) given as parameter.
-  *
-  * @param {string} tonic       first note of the scale (tonic or name of the key)
-  * @param {mode} string            mode of the scale represented by a roman number from I to VII (I = Major VI = minor)
-  * @return {array}                 returns an array of strings representing the degrees of the scale.
-  */
-  getScale(tonic, mode) { //add "mode' as a parameter in the full version
-    // 1- create an array with the proper note names const NotesOrder = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-
+  getScale(tonic, mode) {
     const indexOfTonic = NotesOrder.findIndex(element => tonic.startsWith(element));
     const scaleArray = NotesOrder.slice(indexOfTonic, 7).concat(NotesOrder.slice(0, indexOfTonic));
     scaleArray[0] = tonic;
 
     const modeSteps = MajorSteps.slice(modeIndexes[mode], 7).concat(MajorSteps.slice(0, modeIndexes[mode]));
-
-    //2- verify if distances are okay (if distance between array [0] and [1] == Major Steps [0])  --> const MajorSteps = ['2', '2', '1', '2', '2', '2', '1']
-    //if < or > replace with appropriate note -- chose one with the appropriate number that match the name of the notes
 
     for (let i = 0; i < scaleArray.length - 1; i++) {
 
