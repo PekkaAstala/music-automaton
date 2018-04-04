@@ -65,38 +65,16 @@ test('Generates inclusive note range descending', () => {
   ]);
 });
 
-test('Creating a Major Scale from tonic (getScale)', () => {
-  const major = new Scale('Bb', 'I');
-  const majorScale = major.getScale('Bb');
-  expect(majorScale).toEqual(['Bb', 'C', 'D', 'Eb', 'F', 'G', 'A']);
-});
-
-test('Creating a Major Scale from tonic (getScale)', () => {
-  const major = new Scale('C', 'I');
-  const majorScale = major.getScale('C');
-  expect(majorScale).toEqual(['C', 'D', 'E', 'F', 'G', 'A', 'B']);
-});
-
-test('Creating a Major Scale from tonic (getScale)', () => {
-  const major = new Scale('A', 'I');
-  const majorScale = major.getScale('A');
-  expect(majorScale).toEqual(['A', 'B', 'C#', 'D', 'E', 'F#', 'G#']);
-});
-
-test('Creating a Major Scale from tonic (getScale)', () => {
-  const major = new Scale('C', 'I');
-  const majorScale = major.getScale('C');
-  expect(majorScale).toEqual(['C', 'D', 'E', 'F', 'G', 'A', 'B']);
-});
-
-test('Creating a Major Scale from tonic (getScale)', () => {
-  const major = new Scale('C#', 'I');
-  const majorScale = major.getScale('C#');
-  expect(majorScale).toEqual(['C#', 'D#', 'E#', 'F#', 'G#', 'A#', 'B#']);
-});
-
-test('Creating a minor Scale from tonic (getScale)', () => {
+test('Generates inclusive note range descending (minor scale)', () => {
   const major = new Scale('A', 'VI');
-  const majorScale = major.getScale('A', 'VI');
-  expect(majorScale).toEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G']);
+  const range = major.getNoteRange(new Note('C', 4), new Note('B', 4));
+  expect(range).toEqual([
+    new Note('C', 4),
+    new Note('D', 4),
+    new Note('E', 4),
+    new Note('F', 4),
+    new Note('G', 4),
+    new Note('A', 4),
+    new Note('B', 4)
+  ]);
 });

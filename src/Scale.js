@@ -23,12 +23,43 @@ const modeIndexes = {
   'VII': 6
 };
 
+const getScale = function(tonic, mode) {
+  const indexOfTonic = NotesOrder.findIndex(element => tonic.startsWith(element));
+  const scaleArray = NotesOrder.slice(indexOfTonic, 7).concat(NotesOrder.slice(0, indexOfTonic));
+  scaleArray[0] = tonic;
+
+  const modeSteps = MajorSteps.slice(modeIndexes[mode], 7).concat(MajorSteps.slice(0, modeIndexes[mode]));
+
+  for (let i = 0; i < scaleArray.length - 1; i++) {
+
+    let idCur = KeyIds[scaleArray[i]];
+    let idNext = KeyIds[scaleArray[i+1]];
+
+    let differencesInIds;
+    if (idCur > idNext) {
+      differencesInIds = idNext - idCur + 12;
+    } else {
+      differencesInIds = idNext - idCur;
+    }
+
+    if (differencesInIds < modeSteps[i] ){
+      scaleArray[i+1] = scaleArray[i+1] + '#';
+    }
+
+    if (differencesInIds > modeSteps[i] ){
+      scaleArray[i+1] = scaleArray[i+1] + 'b';
+    }
+
+  }
+
+  return scaleArray;
+};
+
 class Scale {
 
   constructor(tonic, mode) {
-    //case if scale entry doesn't match, find enharmonic degree
     this.mode = mode;
-    this.steps = this.getScale(tonic, mode);
+    this.steps = getScale(tonic, mode);
   }
 
   getStep(degree) {
@@ -99,39 +130,6 @@ class Scale {
 
     return firstNote.isBelow(lastNote) ? rangeAscending(firstNote, lastNote) : rangeDescending(firstNote, lastNote);
   }
-
-  getScale(tonic, mode) {
-    const indexOfTonic = NotesOrder.findIndex(element => tonic.startsWith(element));
-    const scaleArray = NotesOrder.slice(indexOfTonic, 7).concat(NotesOrder.slice(0, indexOfTonic));
-    scaleArray[0] = tonic;
-
-    const modeSteps = MajorSteps.slice(modeIndexes[mode], 7).concat(MajorSteps.slice(0, modeIndexes[mode]));
-
-    for (let i = 0; i < scaleArray.length - 1; i++) {
-
-      let idCur = KeyIds[scaleArray[i]];
-      let idNext = KeyIds[scaleArray[i+1]];
-
-      let differencesInIds;
-      if (idCur > idNext) {
-        differencesInIds = idNext - idCur + 12;
-      } else {
-        differencesInIds = idNext - idCur;
-      }
-
-      if (differencesInIds < modeSteps[i] ){
-        scaleArray[i+1] = scaleArray[i+1] + '#';
-      }
-
-      if (differencesInIds > modeSteps[i] ){
-        scaleArray[i+1] = scaleArray[i+1] + 'b';
-      }
-
-    }
-
-    return scaleArray;
-  }
-
 
 }
 
