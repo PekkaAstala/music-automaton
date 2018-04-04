@@ -1,9 +1,9 @@
 class Note {
 
-  constructor(step, octave, duration = 'quarter') {
+  constructor(step, octave, value = 4) {
     this.step = step;
     this.octave = octave;
-    this.duration = duration;
+    this.value = value;
     //notes might need an alteration attribute?  How are tey going to be treated in the future
     // for future possible MIDI functions, could be interesting to use MIDI note ID attribute
   }
@@ -16,8 +16,20 @@ class Note {
     return this.octave;
   }
 
-  getDuration() {
-    return this.duration;
+  getValue() {
+    return this.value;
+  }
+
+  getType() {
+    switch (this.value) {
+    case 1: return 'whole';
+    case 2: return 'half';
+    case 4: return 'quarter';
+    case 8: return 'eigth';
+    case 16: return '16th';
+    case 32: return '32nd';
+    default: throw 'Value (' + this.value + ') can\'t be converted to type!';
+    }
   }
 
   isSharp() {
@@ -42,11 +54,11 @@ class Note {
   }
 
   inOctave(octave) {
-    return new Note(this.step, octave, this.duration);
+    return new Note(this.step, octave, this.value);
   }
 
-  withDuration(duration) {
-    return new Note(this.step, this.octave, duration);
+  withValue(value) {
+    return new Note(this.step, this.octave, value);
   }
 
 }

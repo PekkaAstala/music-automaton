@@ -11,7 +11,7 @@ function buildPartlist(id, name) {
   };
 }
 
-function noteToMusicXMLObject(note, continuesChord, staff) {
+function noteToMusicXMLObject(timeSignature, note, continuesChord, staff) {
   const obj = {};
   if (continuesChord) {
     obj.chord = {};
@@ -22,14 +22,14 @@ function noteToMusicXMLObject(note, continuesChord, staff) {
     'octave': { '#text': note.getOctave() }
   };
 
-  obj.duration = note.getDuration() === 'quarter' ? 1 : 4;
-  obj.type = note.getDuration();
+  obj.duration = timeSignature.getBeat() / note.getValue();
+  obj.type = note.getType();
   obj.staff = staff;
 
   return obj;
 }
 
-function addMeasure(parent, model) {
+function addMeasure(parent, timeSignature, model) {
   const measure = parent.ele({ 'measure': { '@number': model.number } });
   if (model.number === 1) {
     measure.ele({ 'attributes': {
@@ -38,8 +38,8 @@ function addMeasure(parent, model) {
         'fifths': { '#text': model.fifths }
       },
       'time': {
-        'beats': { '#text': '4' },
-        'beat-type': { '#text': '4' }
+        'beats': { '#text': timeSignature.getBeat() },
+        'beat-type': { '#text': timeSignature.getValue() }
       },
       'staves': 2,
       clef: [
@@ -57,12 +57,12 @@ function addMeasure(parent, model) {
     }});
   }
 
-  const harmonicNotes = model.harmonic.map((note, index) => noteToMusicXMLObject(note, index > 0, 2));
+  const harmonicNotes = model.harmonic.map((note, index) => noteToMusicXMLObject(timeSignature, note, index > 0, 2));
   harmonicNotes.forEach(note => measure.ele({ note }));
 
   measure.ele({ 'backup': { 'duration': { '#text': 16 }}});
 
-  const melodicNotes = model.melodic.map(note => noteToMusicXMLObject(note, false, 1));
+  const melodicNotes = model.melodic.map(note => noteToMusicXMLObject(timeSignature, note, false, 1));
   melodicNotes.forEach(note => measure.ele({ note }));
 }
 
@@ -78,7 +78,7 @@ function toXml(melody) {
   root.ele({ 'part-list': buildPartlist('P1', 'Music' )});
   const part = root.ele({ 'part': { '@id': 'P1' }});
 
-  melody.getMeasures().forEach(measure => addMeasure(part, measure));
+  melody.getMeasures().forEach(measure => addMeasure(part, melody.getTimeSignature(), measure));
 
   return root.end({ pretty: true});
 }

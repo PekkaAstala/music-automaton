@@ -11,8 +11,8 @@ class NoteGenerator {
 
   generate(chords) {
     const upBeats = chords.map(chord => {
-      const firstRandomChord = chord.toNotes(4, 'quarter')[Math.floor(Math.random() * 3)];
-      const secondRandomChord = chord.toNotes(4, 'quarter')[Math.floor(Math.random() * 3)];
+      const firstRandomChord = chord.toNotes(4, 4)[Math.floor(Math.random() * 3)];
+      const secondRandomChord = chord.toNotes(4, 4)[Math.floor(Math.random() * 3)];
 
       return {
         firstUpbeat: firstRandomChord.inOctave(firstRandomChord.getOctave()),
@@ -23,7 +23,7 @@ class NoteGenerator {
     const measures = [];
     for (let i = 0; i < upBeats.length; i++) {
       if (i === upBeats.length - 1) {
-        measures.push([upBeats[i].firstUpbeat.withDuration('whole')]);
+        measures.push([upBeats[i].firstUpbeat.withValue(1)]);
       } else {
         measures.push([ upBeats[i].firstUpbeat,
           getNoteInBetween(this.scale, upBeats[i].firstUpbeat, upBeats[i].secondUpbeat),

@@ -1,3 +1,4 @@
+const TimeSignature = require('./src/TimeSignature');
 const Scale = require('./src/Scale');
 const Melody = require('./src/Melody');
 const ChordGenerator = require('./src/ChordGenerator');
@@ -8,13 +9,14 @@ const sanitize = require('sanitize-filename');
 
 const title = 'Art at ' + new Date().toISOString();
 
+const timeSignature = new TimeSignature(4, 4);
 const scale = new Scale('Bb', 'I');
 const chords = new ChordGenerator(scale).generate();
 
-const harmonicMeasures = chords.map(chord => chord.toNotes(3, 'whole'));
+const harmonicMeasures = chords.map(chord => chord.toNotes(3, 1));
 const melodicMeasures = new NoteGenerator(scale).generate(chords);
 
-const melody = new Melody(title, scale.getFifths(), harmonicMeasures, melodicMeasures);
+const melody = new Melody(title, timeSignature, scale.getFifths(), harmonicMeasures, melodicMeasures);
 
 const xml = MusicXMLOutput.toXml(melody);
 

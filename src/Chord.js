@@ -15,10 +15,10 @@ class Chord {
     return this.type;
   }
 
-  toNotes(octaveOfFirstNote, duration) {
+  toNotes(octaveOfFirstNote, value) {
     const notes = [];
     for (let i = 0; i < this.steps.length; i++) {
-      const note = new Note(this.steps[i], octaveOfFirstNote, duration);
+      const note = new Note(this.steps[i], octaveOfFirstNote, value);
       if (i === 0 || !note.isBelow(notes[i-1])) {
         notes.push(note);
       } else {

@@ -90,7 +90,7 @@ class Scale {
       octave = octave + 1;
     }
 
-    return new Note(step, octave, note.getDuration());
+    return new Note(step, octave, note.getValue());
   }
 
   stepDown(note) {
@@ -104,7 +104,7 @@ class Scale {
       octave = octave - 1;
     }
 
-    return new Note(step, octave, note.getDuration());
+    return new Note(step, octave, note.getValue());
   }
 
   getNoteRange(firstNote, lastNote) {
