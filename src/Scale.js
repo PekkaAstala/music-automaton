@@ -8,39 +8,19 @@ const KeyIds =
   'F': 5, 'F#': 6, 'Gb': 6,'G': 7,'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10,
   'B': 11, 'B#': 0, 'Cb': 11,};
 
-const stepsByMajorScale = {
-  'C': [ 'C', 'D', 'E', 'F', 'G', 'A', 'B' ],
-  'D': [ 'D', 'E', 'F#', 'G', 'A', 'B', 'C#' ],
-  'E': [ 'E', 'F#', 'G#', 'A', 'B', 'C#', 'D#' ],
-  'F': [ 'F', 'G', 'A', 'Bb', 'C', 'D', 'E' ],
-  'G': [ 'G', 'A', 'B', 'C', 'D', 'E', 'F#' ],
-  'A': [ 'A', 'B', 'C#', 'D', 'E', 'F#', 'G#' ],
-  'B': [ 'B', 'C#', 'D#', 'E', 'F#', 'G#', 'A#' ],
-  'Db': [ 'Db', 'Eb', 'F', 'Gb', 'Ab', 'Bb', 'C' ],
-  'Eb': [ 'Eb', 'F', 'G', 'Ab', 'Bb', 'C' ],
-  'F#': [ 'F#', 'G#', 'A#', 'B', 'C#', 'D#', 'E#' ],
-  'Ab': [ 'Ab', 'Bb', 'C', 'Db', 'Eb', 'F', 'G' ],
-  'Bb': [ 'Bb', 'C', 'D', 'Eb', 'F', 'G', 'A' ]
-};
-
-const stepsByMinorScale = {
-  'C': [ 'C', 'D', 'E', 'F', 'G', 'A', 'B' ],
-  'D': [ 'D', 'E', 'F#', 'G', 'A', 'B', 'C#' ],
-  'E': [ 'E', 'F#', 'G#', 'A', 'B', 'C#', 'D#' ],
-  'F': [ 'F', 'G', 'A', 'Bb', 'C', 'D', 'E' ],
-  'G': [ 'G', 'A', 'B', 'C', 'D', 'E', 'F#' ],
-  'A': [ 'A', 'B', 'C#', 'D', 'E', 'F#', 'G#' ],
-  'B': [ 'B', 'C#', 'D#', 'E', 'F#', 'G#', 'A#' ],
-  'Db': [ 'Db', 'Eb', 'F', 'Gb', 'Ab', 'Bb', 'C' ],
-  'Eb': [ 'Eb', 'F', 'G', 'Ab', 'Bb', 'C' ],
-  'F#': [ 'F#', 'G#', 'A#', 'B', 'C#', 'D#', 'E#' ],
-  'Ab': [ 'Ab', 'Bb', 'C', 'Db', 'Eb', 'F', 'G' ],
-  'Bb': [ 'Bb', 'C', 'D', 'Eb', 'F', 'G', 'A' ]
-};
-
 const circularArray = (array, index) => {
   const calculatedIndex = ((index + 1) % array.length) - 1;
   return calculatedIndex < 0 ? array[calculatedIndex + array.length] : array[calculatedIndex];
+};
+
+const modeIndexes = {
+  'I': 0,
+  'II': 1,
+  'III': 2,
+  'IV': 3,
+  'V': 4,
+  'VI': 5,
+  'VII': 6
 };
 
 class Scale {
@@ -48,17 +28,7 @@ class Scale {
   constructor(tonic, mode) {
     //case if scale entry doesn't match, find enharmonic degree
     this.mode = mode;
-    if (this.mode == 'I'){
-      //calls a function that cares about creating the proper scale array
-      //this.steps = KeyIds[tonic];
-      //this.steps = stepsByMajorScale[tonic];
-      this.steps = this.getMajorScale(tonic);
-    }
-
-    else if (this.mode == 'VI'){
-      this.steps = stepsByMinorScale[tonic];
-    }
-
+    this.steps = this.getScale(tonic, mode);
   }
 
   getStep(degree) {
@@ -138,14 +108,14 @@ class Scale {
   * @param {mode} string            mode of the scale represented by a roman number from I to VII (I = Major VI = minor)
   * @return {array}                 returns an array of strings representing the degrees of the scale.
   */
-
-  getMajorScale(tonic) { //add "mode' as a parameter in the full version
-
+  getScale(tonic, mode) { //add "mode' as a parameter in the full version
     // 1- create an array with the proper note names const NotesOrder = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
     const indexOfTonic = NotesOrder.findIndex(element => tonic.startsWith(element));
     const scaleArray = NotesOrder.slice(indexOfTonic, 7).concat(NotesOrder.slice(0, indexOfTonic));
     scaleArray[0] = tonic;
+
+    const modeSteps = MajorSteps.slice(modeIndexes[mode], 7).concat(MajorSteps.slice(0, modeIndexes[mode]));
 
     //2- verify if distances are okay (if distance between array [0] and [1] == Major Steps [0])  --> const MajorSteps = ['2', '2', '1', '2', '2', '2', '1']
     //if < or > replace with appropriate note -- chose one with the appropriate number that match the name of the notes
@@ -162,11 +132,11 @@ class Scale {
         differencesInIds = idNext - idCur;
       }
 
-      if (differencesInIds < MajorSteps[i] ){
+      if (differencesInIds < modeSteps[i] ){
         scaleArray[i+1] = scaleArray[i+1] + '#';
       }
 
-      if (differencesInIds > MajorSteps[i] ){
+      if (differencesInIds > modeSteps[i] ){
         scaleArray[i+1] = scaleArray[i+1] + 'b';
       }
 
