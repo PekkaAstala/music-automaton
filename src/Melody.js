@@ -2,7 +2,6 @@ class Melody {
 
   constructor(metaData, fifths, harmonicMeasures, notes) {
     this.metaData = metaData;
-    //this.title = title;
     this.fifths = fifths;
     this.measures = harmonicMeasures.map((harmonicMeasure, index) => ({
       number: index + 1,
