@@ -1,7 +1,6 @@
 class Melody {
 
-  constructor(title, fifths, harmonicMeasures, notes) {
-    this.title = title;
+  constructor(fifths, harmonicMeasures, notes) {
     this.fifths = fifths;
     this.measures = harmonicMeasures.map((harmonicMeasure, index) => ({
       number: index + 1,
@@ -9,10 +8,6 @@ class Melody {
       melodic: notes[index],
       fifths: fifths
     }));
-  }
-
-  getTitle() {
-    return this.title;
   }
 
   getMeasures() {
