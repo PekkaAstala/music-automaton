@@ -66,7 +66,7 @@ function addMeasure(parent, model) {
   melodicNotes.forEach(note => measure.ele({ note }));
 }
 
-function toXml(melody) {
+function toXml(melody, metaData) {
   const root = builder.create({ 'score-partwise' : { '@version': 3.1 }},
     { version: '1.0', encoding: 'UTF-8', standalone: 'no'},
     {
@@ -74,7 +74,7 @@ function toXml(melody) {
       sysID: 'http://www.musicxml.org/dtds/partwise.dtd'
     }
   );
-  root.ele({ 'work': { 'work-title': melody.getTitle() }});
+  root.ele({ 'work': { 'work-title': metaData.getTitle() }});
   root.ele({ 'part-list': buildPartlist('P1', 'Music' )});
   const part = root.ele({ 'part': { '@id': 'P1' }});
 
