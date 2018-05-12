@@ -12,11 +12,10 @@ class MetaData {
 
   getSanitizedTitle(){
     const sanitizedTitle = './outputs/' + sanitize(this.getTitle(), { replacement: '-' }) + '.xml';
-    return sanitizedTitle;    
+    return sanitizedTitle;
   }
-  
+
   getTitle() {
-    
     return this.title;
   }
 
