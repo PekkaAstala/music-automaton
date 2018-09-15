@@ -1,13 +1,13 @@
+import Scale from './Scale';
+
 function getNoteInBetween(scale, noteA, noteB) {
   const range = scale.getNoteRange(noteA, noteB);
   return range[Math.floor(range.length / 2)];
 }
 
-class NoteGenerator {
+export default class NoteGenerator {
 
-  constructor(scale) {
-    this.scale = scale;
-  }
+  constructor(readonly scale: Scale) { }
 
   generate(chords) {
     const upBeats = chords.map(chord => {
@@ -36,5 +36,3 @@ class NoteGenerator {
   }
 
 }
-
-module.exports = NoteGenerator;

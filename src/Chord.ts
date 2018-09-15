@@ -1,21 +1,18 @@
-const Note = require('./Note');
+import Note from './Note';
 
-class Chord {
+export default class {
 
-  constructor(steps, type) {
-    this.steps = steps;
-    this.type = type;
-  }
+  constructor(readonly steps: Array<string>, readonly type: string) { }
 
-  getSteps() {
+  getSteps(): Array<string> {
     return this.steps;
   }
 
-  getType() {
+  getType(): string {
     return this.type;
   }
 
-  toNotes(octaveOfFirstNote, duration) {
+  toNotes(octaveOfFirstNote: number, duration: string): Array<Note> {
     const notes = [];
     for (let i = 0; i < this.steps.length; i++) {
       const note = new Note(this.steps[i], octaveOfFirstNote, duration);
@@ -29,5 +26,3 @@ class Chord {
   }
 
 }
-
-module.exports = Chord;

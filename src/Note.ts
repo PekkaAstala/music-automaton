@@ -1,9 +1,6 @@
-class Note {
+export default class Note {
 
-  constructor(step, octave, duration = 'quarter') {
-    this.step = step;
-    this.octave = octave;
-    this.duration = duration;
+  constructor(readonly step: string, readonly octave: number, readonly duration: string = 'quarter') {
     //notes might need an alteration attribute?  How are tey going to be treated in the future
     // for future possible MIDI functions, could be interesting to use MIDI note ID attribute
   }
@@ -12,7 +9,7 @@ class Note {
     return this.step;
   }
 
-  getOctave() {
+  getOctave(): number {
     return this.octave;
   }
 
@@ -20,19 +17,19 @@ class Note {
     return this.duration;
   }
 
-  isSharp() {
+  isSharp(): boolean {
     return this.step.endsWith('#');
   }
 
-  isFlat() {
+  isFlat(): boolean {
     return this.step.endsWith('b');
   }
 
-  equals(otherNote) {
+  equals(otherNote): boolean {
     return this.octave === otherNote.octave && this.step === otherNote.step;
   }
 
-  isBelow(otherNote) {
+  isBelow(otherNote): boolean {
     if (this.octave === otherNote.octave) {
       const indexes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
       return indexes.indexOf(this.step.substring(0, 1)) < indexes.indexOf(otherNote.step.substring(0, 1));
@@ -41,14 +38,12 @@ class Note {
     }
   }
 
-  inOctave(octave) {
+  inOctave(octave): Note {
     return new Note(this.step, octave, this.duration);
   }
 
-  withDuration(duration) {
+  withDuration(duration): Note {
     return new Note(this.step, this.octave, duration);
   }
 
 }
-
-module.exports = Note;

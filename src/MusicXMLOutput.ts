@@ -14,17 +14,17 @@ function buildPartlist(id, name) {
 function noteToMusicXMLObject(note, continuesChord, staff) {
   const obj = {};
   if (continuesChord) {
-    obj.chord = {};
+    obj['chord'] = {};
   }
-  obj.pitch =  {
+  obj['pitch'] =  {
     'step': { '#text': note.getStep().substring(0, 1) },
     'alter': (note.isSharp() ? 1 : note.isFlat() ? - 1 : 0),
     'octave': { '#text': note.getOctave() }
   };
 
-  obj.duration = note.getDuration() === 'quarter' ? 1 : 4;
-  obj.type = note.getDuration();
-  obj.staff = staff;
+  obj['duration'] = note.getDuration() === 'quarter' ? 1 : 4;
+  obj['type'] = note.getDuration();
+  obj['staff'] = staff;
 
   return obj;
 }
@@ -66,7 +66,7 @@ function addMeasure(parent, model) {
   melodicNotes.forEach(note => measure.ele({ note }));
 }
 
-function toXml(melody, metaData) {
+export function toXml(melody, metaData) {
   const root = builder.create({ 'score-partwise' : { '@version': 3.1 }},
     { version: '1.0', encoding: 'UTF-8', standalone: 'no'},
     {
@@ -82,5 +82,3 @@ function toXml(melody, metaData) {
 
   return root.end({ pretty: true});
 }
-
-module.exports = { toXml };

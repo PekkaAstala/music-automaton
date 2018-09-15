@@ -1,5 +1,4 @@
-const Note = require('../src/Note');
-
+import Note from '../src/Note';
 
 test ('isBelow when going round the solfage', () => {
   expect(new Note('Bb', 4).isBelow(new Note('F', 4))).toBe(false);

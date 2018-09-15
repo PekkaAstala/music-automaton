@@ -1,16 +1,45 @@
 {
-  "name": "MelodyCrafter",
-  "version": "1.0.0",
-  "main": "app.js",
+  "name": "music-automaton",
+  "version": "1.0.1",
+  "description": "Library to output automatically generated melodies as MusicXML",
+  "keywords": [
+    "MusicXML", "music", "notation"
+  ],
+  "homepage": "https://github.com/PekkaAstala/music-automaton#readme",
+  "bugs": { 
+    "email": "pekka.astala@gmail.com" 
+  },
+  "author": {
+    "name": "Pekka Astala",
+    "email": "pekka.astala@gmail.com"
+ },
+ "contributors": [
+   {
+     "name": "Elvann",
+     "url": "http://www.elvann.com/"
+   }
+ ],
+ "repository": {
+   "type": "git",
+   "url": "https://github.com/PekkaAstala/music-automaton"
+ },
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "license": "MIT",
   "scripts": {
-    "start": "node app.js",
-    "test": "jest --collectCoverage"
+    "start": "node dist/app.js",
+    "test": "jest --collectCoverage",
+    "tsc": "tsc"
   },
   "dependencies": {
-    "eslint": "^4.19.1",
-    "jest": "^22.4.3",
     "sanitize-filename": "^1.6.1",
     "xmlbuilder": "^9.0.7"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.2",    
+    "@types/node": "^10.9.4",
+    "typescript": "^3.0.3",
+    "eslint": "^4.19.1",
+    "jest": "^22.4.3"
   }
 }

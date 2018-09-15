@@ -1,40 +1,35 @@
 const sanitize = require('sanitize-filename');
 
-class MetaData {
+export default class MetaData {
+  date: string;
 
-  constructor(title, composer, poet, rights) {
-    this.title = title;
-    this.composer = composer;
-    this.poet = poet;
-    this.right = rights;
+  constructor(readonly title: string, readonly composer: string, readonly poet: string, readonly rights: string) {
     this.date = new Date().toISOString();
   }
 
-  getSanitizedTitle(){
+  getSanitizedTitle(): string {
     const sanitizedTitle = './outputs/' + sanitize(this.getTitle(), { replacement: '-' }) + '.xml';
     return sanitizedTitle;
   }
 
-  getTitle() {
+  getTitle(): string {
     return this.title;
   }
 
-  getComposer() {
+  getComposer(): string {
     return this.composer;
   }
 
-  getPoet() {
+  getPoet(): string {
     return this.poet;
   }
 
-  getRights() {
+  getRights(): string {
     return this.rights;
   }
 
-  getDate(){
+  getDate(): string {
     return this.date;
   }
 
 }
-
-module.exports = MetaData;
