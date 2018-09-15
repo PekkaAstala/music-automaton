@@ -1,6 +1,5 @@
-const Scale = require('../src/Scale');
-const Note = require('../src/Note');
-
+import Scale from '../src/Scale';
+import Note from '../src/Note';
 
 test ('Steps up within an octave in major scale', () => {
   const major = new Scale('Bb', 'I');

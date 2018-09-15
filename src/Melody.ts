@@ -1,7 +1,7 @@
-class Melody {
+export default class Melody {
+  measures: Array<{}>;
 
-  constructor(fifths, harmonicMeasures, notes) {
-    this.fifths = fifths;
+  constructor(readonly fifths: number, harmonicMeasures, notes) {
     this.measures = harmonicMeasures.map((harmonicMeasure, index) => ({
       number: index + 1,
       harmonic: harmonicMeasure,
@@ -15,5 +15,3 @@ class Melody {
   }
 
 }
-
-module.exports = Melody;

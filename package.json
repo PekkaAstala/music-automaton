@@ -4,13 +4,17 @@
   "main": "app.js",
   "license": "MIT",
   "scripts": {
-    "start": "node app.js",
-    "test": "jest --collectCoverage"
+    "start": "node dist/app.js",
+    "test": "jest --collectCoverage",
+    "tsc": "tsc"
   },
   "dependencies": {
+    "@types/jest": "^23.3.2",
+    "@types/node": "^10.9.4",
     "eslint": "^4.19.1",
     "jest": "^22.4.3",
     "sanitize-filename": "^1.6.1",
+    "typescript": "^3.0.3",
     "xmlbuilder": "^9.0.7"
   }
 }

@@ -1,10 +1,11 @@
-class ChordGenerator {
+import Scale from './Scale';
+import Chord from './Chord';
 
-  constructor(scale) {
-    this.scale = scale;
-  }
+export default class ChordGenerator {
 
-  generate () {
+  constructor(readonly scale: Scale) { }
+
+  generate(): Array<Chord> {
     const startingPoint = [ // Alway start with first degree, etc.
       1, null, null, 5,
       1, null, null, 1,
@@ -17,5 +18,3 @@ class ChordGenerator {
   }
 
 }
-
-module.exports = ChordGenerator;

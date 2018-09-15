@@ -1,15 +1,15 @@
-const Note = require('./Note');
-const Chord = require('./Chord');
+import Note from './Note';
+import Chord from './Chord';
 
-const NotesOrder = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-const MajorSteps = [2, 2, 1, 2, 2, 2, 1];
+const NotesOrder : Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+const MajorSteps : Array<number> = [2, 2, 1, 2, 2, 2, 1];
 const KeyIds =
 {'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3,'Eb': 3, 'E': 4, 'E#': 5, 'Fb': 4,
   'F': 5, 'F#': 6, 'Gb': 6,'G': 7,'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10,
   'B': 11, 'B#': 0, 'Cb': 11,};
 
-const circularArray = (array, index) => {
-  const calculatedIndex = ((index + 1) % array.length) - 1;
+const circularArray = <T>(array: Array<T>, index: number): T => {
+  const calculatedIndex: number = ((index + 1) % array.length) - 1;
   return calculatedIndex < 0 ? array[calculatedIndex + array.length] : array[calculatedIndex];
 };
 
@@ -55,23 +55,23 @@ const getScale = function(tonic, mode) {
   return scaleArray;
 };
 
-class Scale {
+export default class Scale {
+  steps: Array<string>;
 
-  constructor(tonic, mode) {
-    this.mode = mode;
+  constructor(tonic, readonly mode: string) {
     this.steps = getScale(tonic, mode);
   }
 
-  getStep(degree) {
+  getStep(degree: number) {
     return circularArray(this.steps, degree - 1);
   }
 
-  getChord(degree) {
+  getChord(degree: number) {
     const types = [ 'Major', 'minor', 'minor', 'Major', 'Major', 'minor', 'dim' ];
     return new Chord([this.getStep(degree), this.getStep(degree + 2), this.getStep(degree + 4)], types[degree - 1]);
   }
 
-  getFifths() {
+  getFifths() : number {
     if (this.steps[0].endsWith('b')) {
       return -(this.steps.filter(step => step.endsWith('b')).length);
     } else {
@@ -79,7 +79,7 @@ class Scale {
     }
   }
 
-  stepUp(note) {
+  stepUp(note: Note) : Note {
     const index = this.steps.indexOf(note.getStep());
     let step = this.steps[index + 1];
     if (step === undefined) {
@@ -93,7 +93,7 @@ class Scale {
     return new Note(step, octave, note.getDuration());
   }
 
-  stepDown(note) {
+  stepDown(note: Note) : Note {
     const index = this.steps.indexOf(note.getStep());
     let step = this.steps[index - 1];
     if (step === undefined) {
@@ -107,7 +107,7 @@ class Scale {
     return new Note(step, octave, note.getDuration());
   }
 
-  getNoteRange(firstNote, lastNote) {
+  getNoteRange(firstNote: Note, lastNote: Note) : Array<Note> {
     if (firstNote.equals(lastNote)) {
       return [ firstNote ];
     }
@@ -132,5 +132,3 @@ class Scale {
   }
 
 }
-
-module.exports = Scale;
