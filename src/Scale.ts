@@ -66,7 +66,7 @@ export default class Scale {
     return circularArray(this.steps, degree - 1);
   }
 
-  getChord(degree: number) {
+  getChord(degree: number): Chord {
     const types = [ 'Major', 'minor', 'minor', 'Major', 'Major', 'minor', 'dim' ];
     return new Chord([this.getStep(degree), this.getStep(degree + 2), this.getStep(degree + 4)], types[degree - 1]);
   }

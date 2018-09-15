@@ -1,3 +1,6 @@
+import Measure from "./Measure";
+import MetaData from "./MetaData";
+
 const builder = require('xmlbuilder');
 
 function buildPartlist(id, name) {
@@ -29,13 +32,13 @@ function noteToMusicXMLObject(note, continuesChord, staff) {
   return obj;
 }
 
-function addMeasure(parent, model) {
-  const measure = parent.ele({ 'measure': { '@number': model.number } });
-  if (model.number === 1) {
-    measure.ele({ 'attributes': {
+function addMeasure(parent, measure: Measure) {
+  const measureElem = parent.ele({ 'measure': { '@number': measure.number } });
+  if (measure.number === 1) {
+    measureElem.ele({ 'attributes': {
       'divisions': { '#text': '1' },
       'key': {
-        'fifths': { '#text': model.fifths }
+        'fifths': { '#text': measure.fifths }
       },
       'time': {
         'beats': { '#text': '4' },
@@ -57,16 +60,16 @@ function addMeasure(parent, model) {
     }});
   }
 
-  const harmonicNotes = model.harmonic.map((note, index) => noteToMusicXMLObject(note, index > 0, 2));
-  harmonicNotes.forEach(note => measure.ele({ note }));
+  const harmonicNotes = measure.staves[0].notes.map((note, index) => noteToMusicXMLObject(note, index > 0, 2));
+  harmonicNotes.forEach(note => measureElem.ele({ note }));
 
-  measure.ele({ 'backup': { 'duration': { '#text': 16 }}});
+  measureElem.ele({ 'backup': { 'duration': { '#text': 16 }}});
 
-  const melodicNotes = model.melodic.map(note => noteToMusicXMLObject(note, false, 1));
-  melodicNotes.forEach(note => measure.ele({ note }));
+  const melodicNotes = measure.staves[1].notes.map(note => noteToMusicXMLObject(note, false, 1));
+  melodicNotes.forEach(note => measureElem.ele({ note }));
 }
 
-export function toXml(melody, metaData) {
+export function toXml(measures: Array<Measure>, metaData: MetaData) {
   const root = builder.create({ 'score-partwise' : { '@version': 3.1 }},
     { version: '1.0', encoding: 'UTF-8', standalone: 'no'},
     {
@@ -78,7 +81,7 @@ export function toXml(melody, metaData) {
   root.ele({ 'part-list': buildPartlist('P1', 'Music' )});
   const part = root.ele({ 'part': { '@id': 'P1' }});
 
-  melody.getMeasures().forEach(measure => addMeasure(part, measure));
+  measures.forEach(measure => addMeasure(part, measure));
 
   return root.end({ pretty: true});
 }

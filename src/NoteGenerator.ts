@@ -1,38 +1,41 @@
 import Scale from './Scale';
+import Staff, { Clef } from './Staff';
+import Note from './Note';
+import Measure from './Measure';
 
 function getNoteInBetween(scale, noteA, noteB) {
   const range = scale.getNoteRange(noteA, noteB);
   return range[Math.floor(range.length / 2)];
 }
 
+function pickRandom<T>(array: Array<T>): T {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
 export default class NoteGenerator {
 
   constructor(readonly scale: Scale) { }
 
-  generate(chords) {
-    const upBeats = chords.map(chord => {
-      const firstRandomChord = chord.toNotes(4, 'quarter')[Math.floor(Math.random() * 3)];
-      const secondRandomChord = chord.toNotes(4, 'quarter')[Math.floor(Math.random() * 3)];
+  generate(fifths: number, bassStaves: Array<Staff>): Array<Measure> {
+    const upbeats: Array<{first: Note, second: Note}> = bassStaves.map((staff, index): {first: Note, second: Note} => ({
+      first: pickRandom(staff.notes).withDuration('quarter').alterOctaveBy(1),
+      second: pickRandom(staff.notes).withDuration('quarter').alterOctaveBy(1)
+    }));
 
-      return {
-        firstUpbeat: firstRandomChord.inOctave(firstRandomChord.getOctave()),
-        secondUpbeat: secondRandomChord.inOctave(secondRandomChord.getOctave())
-      };
-    });
-
-    const measures = [];
-    for (let i = 0; i < upBeats.length; i++) {
-      if (i === upBeats.length - 1) {
-        measures.push([upBeats[i].firstUpbeat.withDuration('whole')]);
+    const trebleStaves = bassStaves.map((staff, index) => {
+      if (index === bassStaves.length - 1) {
+        return new Staff(Clef.treble, [ upbeats[index].first.withDuration('whole') ]);
       } else {
-        measures.push([ upBeats[i].firstUpbeat,
-          getNoteInBetween(this.scale, upBeats[i].firstUpbeat, upBeats[i].secondUpbeat),
-          upBeats[i].secondUpbeat,
-          (upBeats[i+1] ? getNoteInBetween(this.scale, upBeats[i].secondUpbeat, upBeats[i+1].firstUpbeat) : upBeats[i].secondUpbeat)
+        return new Staff(Clef.treble, [
+          upbeats[index].first,
+          getNoteInBetween(this.scale, upbeats[index].first, upbeats[index].second),
+          upbeats[index].second,
+          getNoteInBetween(this.scale, upbeats[index].second, upbeats[index+1].first)
         ]);
       }
-    }
-    return measures;
+    });
+
+    return bassStaves.map((bassStaff, index) => new Measure(index+1, fifths, [ bassStaff, trebleStaves[index]]));
   }
 
 }

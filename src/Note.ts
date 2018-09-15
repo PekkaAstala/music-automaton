@@ -38,6 +38,10 @@ export default class Note {
     }
   }
 
+  alterOctaveBy(amount: number): Note {
+    return this.inOctave(this.octave + amount);
+  }
+
   inOctave(octave): Note {
     return new Note(this.step, octave, this.duration);
   }

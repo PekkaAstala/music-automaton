@@ -19,7 +19,7 @@ export default class {
       if (i === 0 || !note.isBelow(notes[i-1])) {
         notes.push(note);
       } else {
-        notes.push(note.inOctave(note.getOctave() + 1));
+        notes.push(note.alterOctaveBy(1));
       }
     }
     return notes;
