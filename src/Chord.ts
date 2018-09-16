@@ -1,16 +1,14 @@
 import Note from './Note';
 import Step from './Step';
 
+export enum ChordType { Major, Minor, Augmented, Diminished }
+
 export default class {
 
-  constructor(readonly steps: Array<Step>, readonly type: string) { }
+  constructor(readonly steps: Array<Step>, readonly type: ChordType) { }
 
   getSteps(): Array<Step> {
     return this.steps;
-  }
-
-  getType(): string {
-    return this.type;
   }
 
   toNotes(octaveOfFirstNote: number, duration: string): Array<Note> {

@@ -1,13 +1,10 @@
 import Note from './Note';
-import Chord from './Chord';
+import Chord, { ChordType } from './Chord';
 import Step, { Letter, Accidental } from './Step';
 
 const NotesOrder : Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const MajorSteps : Array<number> = [2, 2, 1, 2, 2, 2, 1];
-const KeyIds =
-{'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3,'Eb': 3, 'E': 4, 'E#': 5, 'Fb': 4,
-  'F': 5, 'F#': 6, 'Gb': 6,'G': 7,'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10,
-  'B': 11, 'B#': 0, 'Cb': 11,};
+const ChordTypes = [ ChordType.Major, ChordType.Minor, ChordType.Minor, ChordType.Major, ChordType.Major, ChordType.Minor, ChordType.Diminished ];
 
 const circularArray = <T>(array: Array<T>, index: number): T => {
   const calculatedIndex: number = ((index + 1) % array.length) - 1;
@@ -25,31 +22,17 @@ const modeIndexes = {
 };
 
 const getScale = function(tonic: Step, mode): Array<Step> {
-  const indexOfTonic = NotesOrder.findIndex(element => Letter[tonic.letter].startsWith(element));
-  const scaleArray = NotesOrder.slice(indexOfTonic, 7).concat(NotesOrder.slice(0, indexOfTonic));
   const modeSteps = MajorSteps.slice(modeIndexes[mode], 7).concat(MajorSteps.slice(0, modeIndexes[mode]));
 
   const stepArray: Array<Step> = [ tonic ];
-  for (let i = 0; i < scaleArray.length - 1; i++) {
-
-    let idCur = KeyIds[scaleArray[i]];
-    let idNext = KeyIds[scaleArray[i+1]];
-
-    let differencesInIds;
-    if (idCur > idNext) {
-      differencesInIds = idNext - idCur + 12;
+  for (let i = 0; i < modeSteps.length - 1; i++) {
+    const prevStep = stepArray[stepArray.length - 1];
+    const preferredAccidental = tonic.isFlat() ? Accidental.Flat : Accidental.Sharp;
+    if (modeSteps[i] === 1) {
+      stepArray.push(prevStep.stepUpSemitone(preferredAccidental))
     } else {
-      differencesInIds = idNext - idCur;
+      stepArray.push(prevStep.stepUpSemitone(preferredAccidental).stepUpSemitone(preferredAccidental));
     }
-    if (stepArray[stepArray.length - 1].isFlat()) {
-      differencesInIds++;
-    } else if (stepArray[stepArray.length - 1].isSharp()) {
-      differencesInIds--;
-    }
-
-    const letter = Letter[scaleArray[i+1]];
-    const accidental = differencesInIds < modeSteps[i] ? Accidental.Sharp : (differencesInIds > modeSteps[i] ? Accidental.Flat : Accidental.Natural);
-    stepArray.push(new Step(letter, accidental));
   }
 
   return stepArray;
@@ -57,9 +40,12 @@ const getScale = function(tonic: Step, mode): Array<Step> {
 
 export default class Scale {
   steps: Array<Step>;
+  chordTypes: Array<ChordType>;
 
   constructor(tonic: Step, readonly mode: string) {
     this.steps = getScale(tonic, mode);
+    const indexOfTonic = NotesOrder.findIndex(element => Letter[tonic.letter].startsWith(element));
+    this.chordTypes = ChordTypes.slice(indexOfTonic, 7).concat(ChordTypes.slice(0, indexOfTonic));
   }
 
   getStep(degree: number): Step {
@@ -67,8 +53,7 @@ export default class Scale {
   }
 
   getChord(degree: number): Chord {
-    const types = [ 'Major', 'minor', 'minor', 'Major', 'Major', 'minor', 'dim' ];
-    return new Chord([this.getStep(degree), this.getStep(degree + 2), this.getStep(degree + 4)], types[degree - 1]);
+    return new Chord([this.getStep(degree), this.getStep(degree + 2), this.getStep(degree + 4)], this.chordTypes[degree - 1]);
   }
 
   getFifths() : number {
