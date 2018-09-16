@@ -1,5 +1,7 @@
 import Measure from "./Measure";
 import MetaData from "./MetaData";
+import Note from "./Note";
+import { Letter } from "./Step";
 
 const builder = require('xmlbuilder');
 
@@ -14,13 +16,13 @@ function buildPartlist(id, name) {
   };
 }
 
-function noteToMusicXMLObject(note, continuesChord, staff) {
+function noteToMusicXMLObject(note: Note, continuesChord, staff) {
   const obj = {};
   if (continuesChord) {
     obj['chord'] = {};
   }
   obj['pitch'] =  {
-    'step': { '#text': note.getStep().substring(0, 1) },
+    'step': { '#text': Letter[note.step.letter] },
     'alter': (note.isSharp() ? 1 : note.isFlat() ? - 1 : 0),
     'octave': { '#text': note.getOctave() }
   };

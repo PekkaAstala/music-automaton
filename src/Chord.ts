@@ -1,10 +1,11 @@
 import Note from './Note';
+import Step from './Step';
 
 export default class {
 
-  constructor(readonly steps: Array<string>, readonly type: string) { }
+  constructor(readonly steps: Array<Step>, readonly type: string) { }
 
-  getSteps(): Array<string> {
+  getSteps(): Array<Step> {
     return this.steps;
   }
 

@@ -1,6 +1,8 @@
+import Step, { Letter, Accidental } from "./Step";
+
 export default class Note {
 
-  constructor(readonly step: string, readonly octave: number, readonly duration: string = 'quarter') {
+  constructor(readonly step: Step, readonly octave: number, readonly duration: string = 'quarter') {
     //notes might need an alteration attribute?  How are tey going to be treated in the future
     // for future possible MIDI functions, could be interesting to use MIDI note ID attribute
   }
@@ -18,21 +20,20 @@ export default class Note {
   }
 
   isSharp(): boolean {
-    return this.step.endsWith('#');
+    return this.step.isSharp();
   }
 
   isFlat(): boolean {
-    return this.step.endsWith('b');
+    return this.step.isFlat();
   }
 
   equals(otherNote): boolean {
-    return this.octave === otherNote.octave && this.step === otherNote.step;
+    return this.octave === otherNote.octave && this.step.equals(otherNote.step);
   }
 
   isBelow(otherNote): boolean {
     if (this.octave === otherNote.octave) {
-      const indexes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-      return indexes.indexOf(this.step.substring(0, 1)) < indexes.indexOf(otherNote.step.substring(0, 1));
+      return this.step.letter < otherNote.step.letter;
     } else {
       return this.octave < otherNote.octave;
     }

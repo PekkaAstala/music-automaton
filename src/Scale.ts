@@ -1,5 +1,6 @@
 import Note from './Note';
 import Chord from './Chord';
+import Step, { Letter, Accidental } from './Step';
 
 const NotesOrder : Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const MajorSteps : Array<number> = [2, 2, 1, 2, 2, 2, 1];
@@ -23,13 +24,12 @@ const modeIndexes = {
   'VII': 6
 };
 
-const getScale = function(tonic, mode) {
-  const indexOfTonic = NotesOrder.findIndex(element => tonic.startsWith(element));
+const getScale = function(tonic: Step, mode): Array<Step> {
+  const indexOfTonic = NotesOrder.findIndex(element => Letter[tonic.letter].startsWith(element));
   const scaleArray = NotesOrder.slice(indexOfTonic, 7).concat(NotesOrder.slice(0, indexOfTonic));
-  scaleArray[0] = tonic;
-
   const modeSteps = MajorSteps.slice(modeIndexes[mode], 7).concat(MajorSteps.slice(0, modeIndexes[mode]));
 
+  const stepArray: Array<Step> = [ tonic ];
   for (let i = 0; i < scaleArray.length - 1; i++) {
 
     let idCur = KeyIds[scaleArray[i]];
@@ -41,28 +41,28 @@ const getScale = function(tonic, mode) {
     } else {
       differencesInIds = idNext - idCur;
     }
-
-    if (differencesInIds < modeSteps[i] ){
-      scaleArray[i+1] = scaleArray[i+1] + '#';
+    if (stepArray[stepArray.length - 1].isFlat()) {
+      differencesInIds++;
+    } else if (stepArray[stepArray.length - 1].isSharp()) {
+      differencesInIds--;
     }
 
-    if (differencesInIds > modeSteps[i] ){
-      scaleArray[i+1] = scaleArray[i+1] + 'b';
-    }
-
+    const letter = Letter[scaleArray[i+1]];
+    const accidental = differencesInIds < modeSteps[i] ? Accidental.Sharp : (differencesInIds > modeSteps[i] ? Accidental.Flat : Accidental.Natural);
+    stepArray.push(new Step(letter, accidental));
   }
 
-  return scaleArray;
+  return stepArray;
 };
 
 export default class Scale {
-  steps: Array<string>;
+  steps: Array<Step>;
 
-  constructor(tonic, readonly mode: string) {
+  constructor(tonic: Step, readonly mode: string) {
     this.steps = getScale(tonic, mode);
   }
 
-  getStep(degree: number) {
+  getStep(degree: number): Step {
     return circularArray(this.steps, degree - 1);
   }
 
@@ -72,21 +72,21 @@ export default class Scale {
   }
 
   getFifths() : number {
-    if (this.steps[0].endsWith('b')) {
-      return -(this.steps.filter(step => step.endsWith('b')).length);
+    if (this.steps[0].isFlat()) {
+      return -(this.steps.filter(step => step.isFlat()).length);
     } else {
-      return this.steps.filter(step => step.endsWith('#')).length;
+      return this.steps.filter(step => step.isSharp()).length;
     }
   }
 
   stepUp(note: Note) : Note {
-    const index = this.steps.indexOf(note.getStep());
+    const index = this.steps.findIndex(elem => elem.equals(note.step));
     let step = this.steps[index + 1];
     if (step === undefined) {
       step = this.steps[0];
     }
     let octave = note.getOctave();
-    if (step.substring(0, 1) === 'C') {
+    if (step.letter === Letter.C) {
       octave = octave + 1;
     }
 
@@ -94,13 +94,13 @@ export default class Scale {
   }
 
   stepDown(note: Note) : Note {
-    const index = this.steps.indexOf(note.getStep());
+    const index = this.steps.findIndex(elem => elem.equals(note.step));
     let step = this.steps[index - 1];
     if (step === undefined) {
       step = this.steps[this.steps.length - 1];
     }
     let octave = note.getOctave();
-    if (step.substring(0, 1) === 'B') {
+    if (step.letter === Letter.B) {
       octave = octave - 1;
     }
 

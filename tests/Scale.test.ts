@@ -1,79 +1,105 @@
 import Scale from '../src/Scale';
 import Note from '../src/Note';
+import Step, { Letter, Accidental } from '../src/Step';
+
+test ('Major scale step generation', () => {
+  const BbMajor = new Scale(new Step(Letter.B, Accidental.Flat), 'I');
+  
+  expect(BbMajor.getStep(1).letter).toBe(Letter.B);
+  expect(BbMajor.getStep(1).isFlat()).toBe(true);
+
+  expect(BbMajor.getStep(2).letter).toBe(Letter.C);
+  expect(BbMajor.getStep(2).isNatural()).toBe(true);
+
+  expect(BbMajor.getStep(3).letter).toBe(Letter.D);
+  expect(BbMajor.getStep(3).isNatural()).toBe(true);
+
+  expect(BbMajor.getStep(4).letter).toBe(Letter.E);
+  expect(BbMajor.getStep(4).isFlat()).toBe(true);
+
+  expect(BbMajor.getStep(5).letter).toBe(Letter.F);
+  expect(BbMajor.getStep(5).isNatural()).toBe(true);
+
+  expect(BbMajor.getStep(6).letter).toBe(Letter.G);
+  expect(BbMajor.getStep(6).isNatural()).toBe(true);
+
+  expect(BbMajor.getStep(7).letter).toBe(Letter.A);
+  expect(BbMajor.getStep(7).isNatural()).toBe(true);
+});
 
 test ('Steps up within an octave in major scale', () => {
-  const major = new Scale('Bb', 'I');
-  const result = major.stepUp(new Note('D', 5));
-  expect(result).toEqual(new Note('Eb', 5));
+  const major = new Scale(new Step(Letter.B, Accidental.Flat), 'I');
+  const result = major.stepUp(new Note(new Step(Letter.D), 5));
+  expect(result).toEqual(new Note(new Step(Letter.E, Accidental.Flat), 5));
 });
 
 test ('Steps up crossing octaves', () => {
-  const major = new Scale('Bb', 'I');
-  const result = major.stepUp(new Note('Bb', 4));
-  expect(result).toEqual(new Note('C', 5));
+  const major = new Scale(new Step(Letter.B, Accidental.Flat), 'I');
+  const result = major.stepUp(new Note(new Step(Letter.B, Accidental.Flat), 4));
+  expect(result).toEqual(new Note(new Step(Letter.C), 5));
 });
 
 test ('Steps up going round the solfage', () => {
-  const major = new Scale('Bb', 'I');
-  const result = major.stepUp(new Note('A', 4));
-  expect(result).toEqual(new Note('Bb', 4));
+  const major = new Scale(new Step(Letter.B, Accidental.Flat), 'I');
+  const result = major.stepUp(new Note(new Step(Letter.A), 4));
+  expect(result).toEqual(new Note(new Step(Letter.B, Accidental.Flat), 4));
 });
 
 test ('Steps down within an octave', () => {
-  const major = new Scale('Bb', 'I');
-  const result = major.stepDown(new Note('Eb', 4));
-  expect(result).toEqual(new Note('D', 4));
+  const major = new Scale(new Step(Letter.B, Accidental.Flat), 'I');
+  const result = major.stepDown(new Note(new Step(Letter.E, Accidental.Flat), 4));
+  expect(result).toEqual(new Note(new Step(Letter.D), 4));
 });
 
 test ('Steps down crossing octaves', () => {
-  const major = new Scale('Bb', 'I');
-  const result = major.stepDown(new Note('C', 4));
-  expect(result).toEqual(new Note('Bb', 3));
+  const major = new Scale(new Step(Letter.B, Accidental.Flat), 'I');
+  const result = major.stepDown(new Note(new Step(Letter.C), 4));
+  expect(result).toEqual(new Note(new Step(Letter.B, Accidental.Flat), 3));
 });
 
 test ('Steps down going round the solfage', () => {
-  const major = new Scale('Bb', 'I');
-  const result = major.stepDown(new Note('Bb', 4));
-  expect(result).toEqual(new Note('A', 4));
+  const major = new Scale(new Step(Letter.B, Accidental.Flat), 'I');
+  const result = major.stepDown(new Note(new Step(Letter.B, Accidental.Flat), 4));
+  expect(result).toEqual(new Note(new Step(Letter.A), 4));
 });
 
 test('Generates inclusive note range ascending', () => {
-  const major = new Scale('Bb', 'I');
-  const range = major.getNoteRange(new Note('Bb', 4), new Note('A', 5));
+  const major = new Scale(new Step(Letter.B, Accidental.Flat), 'I');
+  const range = major.getNoteRange(new Note(new Step(Letter.B, Accidental.Flat), 4), new Note(new Step(Letter.A), 5));
   expect(range).toEqual([
-    new Note('Bb', 4),
-    new Note('C', 5),
-    new Note('D', 5),
-    new Note('Eb', 5),
-    new Note('F', 5),
-    new Note('G', 5),
-    new Note('A', 5)
+    new Note(new Step(Letter.B, Accidental.Flat), 4),
+    new Note(new Step(Letter.C), 5),
+    new Note(new Step(Letter.D), 5),
+    new Note(new Step(Letter.E, Accidental.Flat), 5),
+    new Note(new Step(Letter.F), 5),
+    new Note(new Step(Letter.G), 5),
+    new Note(new Step(Letter.A), 5)
   ]);
 });
 
 test('Generates inclusive note range descending', () => {
-  const major = new Scale('Bb', 'I');
-  const range = major.getNoteRange(new Note('Eb', 4), new Note('G', 3));
+  const major = new Scale(new Step(Letter.B, Accidental.Flat), 'I');
+  const range = major.getNoteRange(new Note(new Step(Letter.E, Accidental.Flat), 4), new Note(new Step(Letter.G), 3));
   expect(range).toEqual([
-    new Note('Eb', 4),
-    new Note('D', 4),
-    new Note('C', 4),
-    new Note('Bb', 3),
-    new Note('A', 3),
-    new Note('G', 3)
+    new Note(new Step(Letter.E, Accidental.Flat), 4),
+    new Note(new Step(Letter.D), 4),
+    new Note(new Step(Letter.C), 4),
+    new Note(new Step(Letter.B, Accidental.Flat), 3),
+    new Note(new Step(Letter.A), 3),
+    new Note(new Step(Letter.G), 3)
   ]);
 });
 
 test('Generates inclusive note range descending (minor scale)', () => {
-  const major = new Scale('A', 'VI');
-  const range = major.getNoteRange(new Note('C', 4), new Note('B', 4));
+  const major = new Scale(new Step(Letter.A), 'VI');
+  const range = major.getNoteRange(new Note(new Step(Letter.C), 4), new Note(new Step(Letter.B), 4));
   expect(range).toEqual([
-    new Note('C', 4),
-    new Note('D', 4),
-    new Note('E', 4),
-    new Note('F', 4),
-    new Note('G', 4),
-    new Note('A', 4),
-    new Note('B', 4)
+    new Note(new Step(Letter.C), 4),
+    new Note(new Step(Letter.D), 4),
+    new Note(new Step(Letter.E), 4),
+    new Note(new Step(Letter.F), 4),
+    new Note(new Step(Letter.G), 4),
+    new Note(new Step(Letter.A), 4),
+    new Note(new Step(Letter.B), 4)
   ]);
 });
