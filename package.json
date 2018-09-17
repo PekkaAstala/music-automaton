@@ -32,7 +32,6 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "sanitize-filename": "^1.6.1",
     "xmlbuilder": "^9.0.7"
   },
   "devDependencies": {
