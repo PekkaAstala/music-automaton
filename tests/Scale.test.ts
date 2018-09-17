@@ -9,26 +9,13 @@ const { I, II, III, IV, V, VI, VII } = Mode;
 test ('Major scale step generation', () => {
   const BbMajor = new Scale(new Step(Letter.B, Flat), I);
   
-  expect(BbMajor.getStep(1).letter).toBe(B);
-  expect(BbMajor.getStep(1).isFlat()).toBe(true);
-
-  expect(BbMajor.getStep(2).letter).toBe(C);
-  expect(BbMajor.getStep(2).isNatural()).toBe(true);
-
-  expect(BbMajor.getStep(3).letter).toBe(D);
-  expect(BbMajor.getStep(3).isNatural()).toBe(true);
-
-  expect(BbMajor.getStep(4).letter).toBe(E);
-  expect(BbMajor.getStep(4).isFlat()).toBe(true);
-
-  expect(BbMajor.getStep(5).letter).toBe(F);
-  expect(BbMajor.getStep(5).isNatural()).toBe(true);
-
-  expect(BbMajor.getStep(6).letter).toBe(G);
-  expect(BbMajor.getStep(6).isNatural()).toBe(true);
-
-  expect(BbMajor.getStep(7).letter).toBe(A);
-  expect(BbMajor.getStep(7).isNatural()).toBe(true);
+  expect(BbMajor.getStep(1)).toEqual(new Step(B, Flat));
+  expect(BbMajor.getStep(2)).toEqual(new Step(C));
+  expect(BbMajor.getStep(3)).toEqual(new Step(D));
+  expect(BbMajor.getStep(4)).toEqual(new Step(E, Flat));
+  expect(BbMajor.getStep(5)).toEqual(new Step(F));
+  expect(BbMajor.getStep(6)).toEqual(new Step(G));
+  expect(BbMajor.getStep(7)).toEqual(new Step(A));
 });
 
 test ('Steps up within an octave in major scale', () => {
