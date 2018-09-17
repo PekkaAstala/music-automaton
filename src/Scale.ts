@@ -14,18 +14,18 @@ const circularArray = <T>(array: Array<T>, index: number): T => {
   return calculatedIndex < 0 ? array[calculatedIndex + array.length] : array[calculatedIndex];
 };
 
-const modeIndexes = {
-  'I': 0,
-  'II': 1,
-  'III': 2,
-  'IV': 3,
-  'V': 4,
-  'VI': 5,
-  'VII': 6
+export enum Mode {
+  'I' = 0,
+  'II' = 1,
+  'III' = 2,
+  'IV' = 3,
+  'V' = 4,
+  'VI' = 5,
+  'VII' = 6
 };
 
-const getScale = function(tonic: Step, mode): Array<Step> {
-  const modeSteps = MajorSteps.slice(modeIndexes[mode], 7).concat(MajorSteps.slice(0, modeIndexes[mode]));
+const getScale = function(tonic: Step, mode: Mode): Array<Step> {
+  const modeSteps = MajorSteps.slice(mode, 7).concat(MajorSteps.slice(0, mode));
 
   const stepArray: Array<Step> = [ tonic ];
   for (let i = 0; i < modeSteps.length - 1; i++) {
@@ -45,7 +45,7 @@ export default class Scale {
   steps: Array<Step>;
   chordTypes: Array<ChordType>;
 
-  constructor(tonic: Step, readonly mode: string) {
+  constructor(tonic: Step, readonly mode: Mode) {
     this.steps = getScale(tonic, mode);
     const indexOfTonic = NotesOrder.findIndex(element => Letter[tonic.letter].startsWith(element));
     this.chordTypes = ChordTypes.slice(indexOfTonic, 7).concat(ChordTypes.slice(0, indexOfTonic));

@@ -6,11 +6,11 @@ The output is a [MusicXML](https://www.musicxml.com/) string. MusicXML files can
 ## Using the library
 
 ```javascript
-const MusicAutomaton = require('./dist/main');
+const MusicAutomaton = require('music-automaton');
 
 const metaData = new MusicAutomaton.MetaData('Art at ' + new Date().toISOString(), 'ComposerName', 'PoetName', 'Rights');
 const Bb = new MusicAutomaton.Step(MusicAutomaton.Letter.B, MusicAutomaton.Accidental.Flat);
-const BbMajor = new MusicAutomaton.Scale(Bb, 'I');
+const BbMajor = new MusicAutomaton.Scale(Bb, MusicAutomaton.Mode.I);
 const xml = MusicAutomaton.generate(metaData, BbMajor);
 ```
 

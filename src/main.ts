@@ -1,4 +1,4 @@
-import Scale from './Scale';
+import Scale, { Mode } from './Scale';
 import Step, { Letter, Accidental } from './Step';
 import MetaData from './MetaData';
 import ChordGenerator from './ChordGenerator';
@@ -14,5 +14,5 @@ function generate(metaData: MetaData, scale: Scale): string {
   return xml;
 }
 
-export { MetaData, Scale, Step, Letter, Accidental, generate };
+export { MetaData, Scale, Step, Letter, Mode, Accidental, generate };
 
