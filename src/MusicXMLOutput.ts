@@ -3,7 +3,7 @@ import MetaData from "./MetaData";
 import Note from "./Note";
 import { Letter } from "./Step";
 
-const builder = require('xmlbuilder');
+import { create, XMLElementOrXMLNode } from 'xmlbuilder';
 
 function buildPartlist(id, name) {
   return {
@@ -16,7 +16,7 @@ function buildPartlist(id, name) {
   };
 }
 
-function noteToMusicXMLObject(note: Note, continuesChord, staff) {
+function noteToMusicXMLObject(note: Note, continuesChord: boolean, staff: number) {
   const obj = {};
   if (continuesChord) {
     obj['chord'] = {};
@@ -34,7 +34,7 @@ function noteToMusicXMLObject(note: Note, continuesChord, staff) {
   return obj;
 }
 
-function addMeasure(parent, measure: Measure) {
+function addMeasure(parent: XMLElementOrXMLNode, measure: Measure) {
   const measureElem = parent.ele({ 'measure': { '@number': measure.number } });
   if (measure.number === 1) {
     measureElem.ele({ 'attributes': {
@@ -71,8 +71,8 @@ function addMeasure(parent, measure: Measure) {
   melodicNotes.forEach(note => measureElem.ele({ note }));
 }
 
-export function toXml(measures: Array<Measure>, metaData: MetaData) {
-  const root = builder.create({ 'score-partwise' : { '@version': 3.1 }},
+export function toXml(measures: Array<Measure>, metaData: MetaData): string {
+  const root : XMLElementOrXMLNode = create({ 'score-partwise' : { '@version': 3.1 }},
     { version: '1.0', encoding: 'UTF-8', standalone: 'no'},
     {
       pubID: '-//Recordare//DTD MusicXML 3.1 Partwise//EN',
