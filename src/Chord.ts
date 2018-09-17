@@ -1,4 +1,4 @@
-import Note from './Note';
+import Note, { Duration } from './Note';
 import Step from './Step';
 
 export enum ChordType { Major, Minor, Augmented, Diminished }
@@ -11,7 +11,7 @@ export default class {
     return this.steps;
   }
 
-  toNotes(octaveOfFirstNote: number, duration: string): Array<Note> {
+  toNotes(octaveOfFirstNote: number, duration: Duration): Array<Note> {
     const notes = [];
     for (let i = 0; i < this.steps.length; i++) {
       const note = new Note(this.steps[i], octaveOfFirstNote, duration);

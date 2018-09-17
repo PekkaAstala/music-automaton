@@ -1,8 +1,17 @@
 import Step, { Letter, Accidental } from "./Step";
 
+export enum Duration {
+  Whole = 1,
+  HalfDotted = 0.75,
+  Half = 0.5,
+  QuarterDotted = 0.375,
+  Quarter = 0.25,
+  Eigth = 0.125
+}
+
 export default class Note {
 
-  constructor(readonly step: Step, readonly octave: number, readonly duration: string = 'quarter') {
+  constructor(readonly step: Step, readonly octave: number, readonly duration: Duration = Duration.Quarter) {
     //notes might need an alteration attribute?  How are tey going to be treated in the future
     // for future possible MIDI functions, could be interesting to use MIDI note ID attribute
   }
@@ -47,7 +56,7 @@ export default class Note {
     return new Note(this.step, octave, this.duration);
   }
 
-  withDuration(duration): Note {
+  withDuration(duration: Duration): Note {
     return new Note(this.step, this.octave, duration);
   }
 

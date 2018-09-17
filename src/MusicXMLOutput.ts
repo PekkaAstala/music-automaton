@@ -1,6 +1,6 @@
 import Measure from "./Measure";
 import MetaData from "./MetaData";
-import Note from "./Note";
+import Note, { Duration } from "./Note";
 import { Letter } from "./Step";
 
 import { create, XMLElementOrXMLNode } from 'xmlbuilder';
@@ -27,7 +27,7 @@ function noteToMusicXMLObject(note: Note, continuesChord: boolean, staff: number
     'octave': { '#text': note.getOctave() }
   };
 
-  obj['duration'] = note.getDuration() === 'quarter' ? 1 : 4;
+  obj['duration'] = note.getDuration() === Duration.Quarter ? 1 : 4;
   obj['type'] = note.getDuration();
   obj['staff'] = staff;
 

@@ -1,6 +1,6 @@
 import Scale from './Scale';
 import Staff, { Clef } from './Staff';
-import Note from './Note';
+import Note, { Duration } from './Note';
 import Measure from './Measure';
 
 function getNoteInBetween(scale, noteA, noteB) {
@@ -18,13 +18,13 @@ export default class NoteGenerator {
 
   generate(fifths: number, bassStaves: Array<Staff>): Array<Measure> {
     const upbeats: Array<{first: Note, second: Note}> = bassStaves.map((staff, index): {first: Note, second: Note} => ({
-      first: pickRandom(staff.notes).withDuration('quarter').alterOctaveBy(1),
-      second: pickRandom(staff.notes).withDuration('quarter').alterOctaveBy(1)
+      first: pickRandom(staff.notes).withDuration(Duration.Quarter).alterOctaveBy(1),
+      second: pickRandom(staff.notes).withDuration(Duration.Quarter).alterOctaveBy(1)
     }));
 
     const trebleStaves = bassStaves.map((staff, index) => {
       if (index === bassStaves.length - 1) {
-        return new Staff(Clef.treble, [ upbeats[index].first.withDuration('whole') ]);
+        return new Staff(Clef.treble, [ upbeats[index].first.withDuration(Duration.Whole) ]);
       } else {
         return new Staff(Clef.treble, [
           upbeats[index].first,
