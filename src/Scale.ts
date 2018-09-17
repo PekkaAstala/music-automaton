@@ -2,6 +2,9 @@ import Note from './Note';
 import Chord, { ChordType } from './Chord';
 import Step, { Letter, Accidental } from './Step';
 
+const { Flat, Natural, Sharp } = Accidental;
+const { C, D, E, F, G, A, B } = Letter;
+
 const NotesOrder : Array<string> = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const MajorSteps : Array<number> = [2, 2, 1, 2, 2, 2, 1];
 const ChordTypes = [ ChordType.Major, ChordType.Minor, ChordType.Minor, ChordType.Major, ChordType.Major, ChordType.Minor, ChordType.Diminished ];
@@ -27,7 +30,7 @@ const getScale = function(tonic: Step, mode): Array<Step> {
   const stepArray: Array<Step> = [ tonic ];
   for (let i = 0; i < modeSteps.length - 1; i++) {
     const prevStep = stepArray[stepArray.length - 1];
-    const preferredAccidental = tonic.isFlat() ? Accidental.Flat : Accidental.Sharp;
+    const preferredAccidental = tonic.isFlat() ? Flat : Sharp;
     if (modeSteps[i] === 1) {
       stepArray.push(prevStep.stepUpSemitone(preferredAccidental))
     } else {
@@ -65,31 +68,19 @@ export default class Scale {
   }
 
   stepUp(note: Note) : Note {
-    const index = this.steps.findIndex(elem => elem.equals(note.step));
-    let step = this.steps[index + 1];
-    if (step === undefined) {
-      step = this.steps[0];
-    }
-    let octave = note.getOctave();
-    if (step.letter === Letter.C) {
-      octave = octave + 1;
-    }
-
-    return new Note(step, octave, note.getDuration());
+    const stepIndex = this.steps.findIndex(step => step.equals(note.step));
+    const newStepIndex = stepIndex === this.steps.length - 1 ? 0 : stepIndex + 1;
+    const newStep = this.steps[newStepIndex];
+    const increaseOctave = newStep.letter === C;
+    return new Note(newStep, increaseOctave ? note.octave + 1 : note.octave, note.duration);
   }
 
   stepDown(note: Note) : Note {
-    const index = this.steps.findIndex(elem => elem.equals(note.step));
-    let step = this.steps[index - 1];
-    if (step === undefined) {
-      step = this.steps[this.steps.length - 1];
-    }
-    let octave = note.getOctave();
-    if (step.letter === Letter.B) {
-      octave = octave - 1;
-    }
-
-    return new Note(step, octave, note.getDuration());
+    const stepIndex = this.steps.findIndex(step => step.equals(note.step));
+    const newStepIndex = stepIndex === 0 ? this.steps.length - 1 : stepIndex - 1;
+    const newStep = this.steps[newStepIndex];
+    const decreaseOctave = newStep.letter === B;
+    return new Note(newStep, decreaseOctave ? note.octave - 1 : note.octave, note.duration);
   }
 
   getNoteRange(firstNote: Note, lastNote: Note) : Array<Note> {
